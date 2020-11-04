@@ -12,9 +12,9 @@
     <maven.compiler.target>1.8</maven.compiler.target>
     <cdp.version>{{ version }}</cdp.version>{% if "spark" is in components %}
     <spark.version>{{ spark_version }}</spark.version>{% endif %} {% if language == "scala" %}
-    <scala.version>2.11.12</scala.version>
+    <scala.version>2.12.12</scala.version>
     <spec2.version>4.2.0</spec2.version> {% endif %}
-    <scala.compat.version>2.11</scala.compat.version>
+    <scala.compat.version>2.12</scala.compat.version>
   </properties>
 
   <!-- Cloudera repository needed to get good CDP versions of jars -->
@@ -30,7 +30,27 @@
       <groupId>org.scala-lang</groupId>
       <artifactId>scala-library</artifactId>
       <version>${scala.version}</version>
-    </dependency> {% endif %}
+    </dependency>
+
+    {% if logger is sameas true %}<!-- Log4j required dependencies for scala -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api-scala_2.12</artifactId>
+            <version>11.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.11.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.11.0</version>
+        </dependency>{% endif %}
+    {% else %}
 
     {% if logger is sameas true %}
     <!-- Logger -->
@@ -39,6 +59,7 @@
       <artifactId>log4j</artifactId>
       <version>1.2.17</version>
     </dependency>
+    {% endif %}
     {% endif %}
 
     <!-- Test -->
@@ -67,18 +88,18 @@
       <scope>test</scope>
     </dependency> {% endif %}
 
-    {% if "spark" is in components %}
+    {% if "spark" == type %}
     <!-- Spark dependencies -->
     <dependency>
       <groupId>org.apache.spark</groupId>
       <artifactId>spark-core_${scala.compat.version}</artifactId>
       <version>${spark.version}</version>
-    </dependency> {% if "sql" is in feature %}
+    </dependency> {% if "sql" is in spark_feature %}
     <dependency>
       <groupId>org.apache.spark</groupId>
       <artifactId>spark-sql_${scala.compat.version}</artifactId>
       <version>${spark.version}</version>
-    </dependency> {% endif %} {% if "streaming" is in feature %}
+    </dependency> {% endif %} {% if "streaming" is in spark_feature %}
     <dependency>
      <groupId>org.apache.spark</groupId>
      <artifactId>spark-streaming_${scala.compat.version}</artifactId>
@@ -115,22 +136,8 @@
 
     <plugins>
 
-        <plugin>
-            <!-- Build an executable JAR -->
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-jar-plugin</artifactId>
-            <version>3.1.0</version>
-            <configuration>
-                <archive>
-                    <manifest>
-                        <mainClass>{{ package_name }}.App</mainClass>
-                    </manifest>
-                </archive>
-            </configuration>
-        </plugin>
-
       {% if fat_jar is sameas true %}
-      <!-- fat jar creation -->
+      <!-- Build a Fat jar -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
@@ -142,6 +149,7 @@
           <archive>
             <manifest>
               <mainClass>{{ package_name }}.App</mainClass>
+              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
             </manifest>
           </archive>
         </configuration>
@@ -157,7 +165,21 @@
         </executions>
       </plugin>
       {% else %}
-
+      <!-- Build an executable JAR -->
+      <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <version>3.1.0</version>
+            <configuration>
+                <archive>
+                    <manifest>
+                        <mainClass>{{ package_name }}.App</mainClass>
+                        <addClasspath>true</addClasspath>
+                        <classpathPrefix>/opt/cloudera/parcels/CDH/jars/</classpathPrefix>
+                    </manifest>
+                </archive>
+            </configuration>
+        </plugin>
       {% endif %}
 
       {% if language == "scala" %}
@@ -217,5 +239,15 @@
       </plugin> {% endif %}
 
     </plugins>
+
+    <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>*.jar</exclude>
+                </excludes>
+            </resource>
+    </resources>
+
   </build>
 </project>

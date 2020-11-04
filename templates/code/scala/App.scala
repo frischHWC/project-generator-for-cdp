@@ -1,16 +1,16 @@
 package {{ package_name }}
 
-{% if logger is sameas true %}import org.apache.log4j._{% endif %}
+{% if logger is sameas true %}import org.apache.logging.log4j.scala.Logging{% endif %}
+{% if type == "spark" %}
 {% if "core" is in feature %}import org.apache.spark.{SparkConf, SparkContext}{% endif %}
 {% if "sql" is in feature %}import org.apache.spark.sql.SparkSession{% endif %}
 {% if "streaming" is in feature %}import org.apache.spark.streaming.{Seconds, StreamingContext}
 import org.apache.spark.SparkConf
-{% endif %}
+{% endif %}{% endif %}
+import {{ package_name }}.config.AppConfig
 
 
-object App {
-
-  {% if logger is sameas true -%}@transient lazy val logger = Logger.getLogger(getClass.getName){% endif %}
+object App {% if logger is sameas true %}extends Logging{% endif %}{
 
   /**
    * Main function that creates a SparkContext and launches treatment
@@ -18,6 +18,9 @@ object App {
    */
   def main(args : Array[String]) {
 
+    logger.info("Starting application: " + AppConfig.name)
+
+    {% if type == "spark" %}
     {% if "core" is in feature %} // Create Spark Context
     val conf = new SparkConf().setMaster(AppConfig.master)
       .setAppName(AppConfig.name)
@@ -47,6 +50,9 @@ object App {
 
     ssc.start()             // Start the computation
     ssc.awaitTermination()  // Wait for the computation to terminate {% endif %}
+    {% endif %}
+
+    logger.info("Finished application: "  + AppConfig.name)
 
   }
 

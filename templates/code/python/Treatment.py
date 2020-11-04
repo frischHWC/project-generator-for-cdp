@@ -1,5 +1,6 @@
 from AppConfig import *
 
+{ % if type == "spark" %}
 {% if "core" is in feature %}
 def treatment(sc):
     """
@@ -64,3 +65,5 @@ def treatment_streaming(ssc):
     ssc.start()
     ssc.awaitTermination()
     {% endif %}
+
+{ % endif %}

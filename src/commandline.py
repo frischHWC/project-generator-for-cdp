@@ -52,15 +52,18 @@ def command_line_arguments_to_dict():
                         help="Type of file to generate documentation files")
     parser.add_argument('--libs', type=str, choices=["typesafe", "lombok"], default=[], nargs='*',
                         help="To include other third party libraries")
-    # TODO: Implement fat jar
     parser.add_argument('--fatjar', type=bool, choices=[True, False], default=True,
                         help="To generate a fat jar or not")
 
     # TODO : Add some command line optional arguments to handle all different types of clients
     parser.add_argument('--components', type=str, nargs='*',
-                        choices=["hbase", "hdfs", "hive", "kudu", "kafka", "ozone", "spark", "kafkastream", "flink"],
-                        default="hdfs",
+                        choices=["none", "hbase", "hdfs", "hive", "kudu", "kafka", "ozone"],
+                        default="none",
                         help="Components that program will interact with")
+    parser.add_argument('--type', type=str,
+                        choices=["normal", "spark", "kafkastream", "flink"],
+                        default="normal",
+                        help="Program type (normal by default)")
 
     # Related to specific components that will be used
     parser.add_argument('--spark-feature', type=str, nargs='*',
@@ -100,6 +103,8 @@ def check_command_lines(dict_of_options: dict):
 
     # Rule #10 : If --sendFiles is true, --host and --user must be filled in
 
-    # Rule #11 :
+    # Rule #11 : If another type than normal is chosen, no components can be added
+
+    # Rule #12 :
 
     logger.info("Check on arguments passed made")

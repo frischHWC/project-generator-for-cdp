@@ -1,15 +1,16 @@
 package {{ package_name }}
 
-{% if logger is sameas true %}import org.apache.log4j.Logger{% endif %}
+{% if logger is sameas true %}import org.apache.logging.log4j.scala.Logging{% endif %}
+{% if type == "spark" %}
 {% if "core" is in feature %}import org.apache.spark.SparkContext{% endif %}
 {% if "sql" is in feature %}import org.apache.spark.sql.SparkSession{% endif %}
 {% if "streaming" is in feature %}import org.apache.spark.streaming.StreamingContext{% endif %}
+{% endif %}
 
 
-object Treatment {
+object Treatment {% if logger is sameas true %}extends Logging{% endif %}{
 
-  {% if logger is sameas true %}@transient lazy val logger = Logger.getLogger(getClass.getName){% endif %}
-
+{% if type == "spark" %}
   {% if "core" is in feature %}/**
     * Spark Simple Treatment
     */
@@ -72,7 +73,7 @@ object Treatment {
       })
     })
 
-
   }{% endif %}
+  {% endif %}
 
 }

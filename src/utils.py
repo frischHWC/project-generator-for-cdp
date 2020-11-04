@@ -71,11 +71,11 @@ def move_file(source: str, target: str):
         logger.error("Could not move file from \'%s\' to \'%s\'", source, target, e)
 
 
-def check_files_and_compilation(compiler: str, project_name: str, compilation: bool):
+def check_files_and_compilation(compiler: str, compilation: bool, project_path: str):
     """
     Check all files have been rendered and launch a compilation if needed
     :param compiler:
-    :param project_name:
+    :param project_path:
     :param compilation:
     :return:
     """
@@ -85,9 +85,9 @@ def check_files_and_compilation(compiler: str, project_name: str, compilation: b
         # Launch a compilation
         if compiler == "maven":
             logger.info("Launching a mvn package : ")
-            os.system("cd ../../" + project_name + "/ ; mvn package")
+            os.system("cd " + project_path + "; mvn package")
         elif compiler == "sbt":
             logger.info("Launching a sbt assembly : ")
-            os.system("cd ../../" + project_name + "/ ; sbt assembly")
+            os.system("cd " + project_path + "; sbt assembly")
 
     logger.info("Check on files generated : completed")

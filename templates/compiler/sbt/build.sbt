@@ -20,7 +20,7 @@ libraryDependencies ++= Seq(
   "org.apache.logging.log4j" % "log4j-core" % "2.11.2",
   {% endif %}
 
-  {% if "spark" is in components %}
+  {% if "spark" == type %}
   "org.apache.spark" %% "spark-core" % s"${sparkVersion}",{% if "sql" is in feature %}
   "org.apache.spark" %% "spark-sql" % s"${sparkVersion}",{% endif %}{% if "streaming" is in feature %}
   "org.apache.spark" %% "spark-streaming" % s"${sparkVersion}",{% if "kafka" is in techs %}

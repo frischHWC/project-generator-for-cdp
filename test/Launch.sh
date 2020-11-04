@@ -7,15 +7,14 @@
 #export HDFS_WORK_DIR=
 
 
-# Generate docs
-cd src/
+# Generate project
 python3 main.py \
     --version 7.1.4.0-203 \
-    --language java \
+    --language scala \
     --projectName first_test \
     --packageName com.cloudera.frisch \
     --compilation true \
-    --compiler maven \
+    --compiler sbt \
     --fatjar true  \
     --kerberos true \
     --principal  dev \
@@ -27,7 +26,7 @@ python3 main.py \
     --hdfsWorkDir ${HDFS_WORK_DIR}
 
 # Start program with script
-cd ../../first_test
+cd ../first_test
 chmod +x src/main/resources/scripts/*
 src/main/resources/scripts/launchFromIDE.sh
 

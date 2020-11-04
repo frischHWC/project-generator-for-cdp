@@ -1,18 +1,18 @@
 package {{ package_name }};
 
 {% if logger is sameas true %}import org.apache.log4j.*;{% endif %}
-{% if "spark" is in components %}
-{% if "core" is in feature %}
+{% if type == "spark" %}
+{% if "core" is in spark_feature %}
 import org.apache.spark.api.java.JavaSparkContext;
 {% endif %}
-{% if "core" is in feature or "streaming" is in feature %}
+{% if "core" is in spark_feature or "streaming" is in spark_feature %}
 import org.apache.spark.SparkConf;
 {% endif %}
-{% if "streaming" is in feature %}
+{% if "streaming" is in spark_feature %}
 import org.apache.spark.streaming.Durations;
 import org.apache.spark.streaming.api.java.JavaStreamingContext;
 {% endif %}
-{% if "sql" is in feature or "structured_streaming" is in feature %}
+{% if "sql" is in spark_feature or "structured_streaming" is in spark_feature %}
 import org.apache.spark.sql.SparkSession;
 {% endif %}
 {% endif %}
@@ -29,7 +29,7 @@ public class App {
     {% if logger is sameas true %}logger.info("Start Application");{% endif %}
 
     {% if "spark" is in components %}
-    {% if "core" is in feature %}// Creating Spark context
+    {% if "core" is in spark_feature %}// Creating Spark context
     SparkConf conf = new SparkConf().setMaster(appConfig.master)
       .setAppName(appConfig.name);
     JavaSparkContext sc = new JavaSparkContext(conf);
@@ -37,17 +37,17 @@ public class App {
     // Launch treatment
     Treatment.treatment(sc); {% endif %}
 
-    {% if "sql" is in feature or "structured_streaming" is in feature %}// Create Spark SQL Context
+    {% if "sql" is in spark_feature or "structured_streaming" is in spark_feature %}// Create Spark SQL Context
     SparkSession spark = SparkSession
       .builder()
       .appName(appConfig.name)
-       {% if "structured_streaming" is in feature %}.config("spark.sql.streaming.schemaInference", "true"){% endif %}
+       {% if "structured_streaming" is in spark_feature %}.config("spark.sql.streaming.schemaInference", "true"){% endif %}
       .getOrCreate();
 
      // Launch treatment
-    {% if "structured_streaming" is in feature %}Treatment.structuredStreamingTreatment(spark);{% else %}Treatment.sqlTreatment(spark);{% endif %}{% endif %}
+    {% if "structured_streaming" is in spark_feature %}Treatment.structuredStreamingTreatment(spark);{% else %}Treatment.sqlTreatment(spark);{% endif %}{% endif %}
 
-    {% if "streaming" is in feature %}
+    {% if "streaming" is in spark_feature %}
     // Create Streaming context
 
      SparkConf conf = new SparkConf().setMaster(appConfig.master)

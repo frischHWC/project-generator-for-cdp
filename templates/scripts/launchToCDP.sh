@@ -32,5 +32,3 @@ ssh ${USER}@${HOST} 'bash -s' < src/main/resources/scripts/launch.sh $@
 {% elif language == "python" %}
 ssh ${USER}@${HOST} 'bash -s' < resources/scripts/launch.sh $@
 {% endif %}
-echo "Program finished"
-

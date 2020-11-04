@@ -1,11 +1,14 @@
+{% if type == "spark" %}
 {% if "core" or "streaming" is in feature %}from pyspark import SparkContext, SparkConf{% endif %}
 {% if "sql" or "structured_streaming" is in feature %}from pyspark.sql import SparkSession{% endif %}
 {% if "streaming" is in feature %}from pyspark.streaming import StreamingContext{% endif %}
+{% endif %}
 from Treatment import *
 from AppConfig import *
 
 
 def main():
+    { % if type == "spark" %}
     {% if "core" or "streaming" is in feature %}
     conf = SparkConf().setAppName(app_name).setMaster(master)
     sc = SparkContext(conf=conf){% endif %}
@@ -25,7 +28,11 @@ def main():
     treatment_streaming(ssc)
     ssc.start()
     ssc.awaitTermination(){% endif %}
+    {% else %}
+    print("Starting app: "  + AppConfig.app_name)
 
+    print("Finished app: " + AppConfig.app_name)
+    { % endif %}
 
 if __name__ == "__main__":
 

@@ -1,22 +1,22 @@
 package {{ package_name }};
 
 {% if logger is sameas true %}import org.apache.log4j.Logger;{% endif %}
-{% if "spark" is in components %}
-{% if "core" is in feature %}
+{% if "spark" == type %}
+{% if "core" is in spark_feature %}
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.SparkConf;
 {% endif %}
-{% if "streaming" is in feature %}
+{% if "streaming" is in spark_feature %}
 import org.apache.spark.streaming.api.java.JavaDStream;
 import org.apache.spark.streaming.api.java.JavaStreamingContext;
 {% endif %}
-{% if "structured_streaming" is in feature or "sql" is in feature %}
+{% if "structured_streaming" is in spark_feature or "sql" is in spark_feature %}
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.SparkSession;
 {% endif %}
-{% if "structured_streaming" is in feature %}
+{% if "structured_streaming" is in spark_feature %}
 import org.apache.spark.sql.streaming.StreamingQuery;
 import org.apache.spark.sql.streaming.StreamingQueryException;
 {% endif %}
@@ -29,8 +29,8 @@ class Treatment {
 
   {% if logger is sameas true %}private static Logger logger = Logger.getLogger(Treatment.class);{% endif %}
 
-  {% if "spark" is in components %}
-  {% if "core" is in feature %}/**
+  {% if "spark" == type %}
+  {% if "core" is in spark_feature %}/**
     * Spark Simple Treatment
     */
   public static void treatment(JavaSparkContext sc) {
@@ -46,7 +46,7 @@ class Treatment {
 
   } {% endif %}
 
-    {% if "sql" is in feature %}/**
+    {% if "sql" is in spark_feature %}/**
     * Spark SQL treatment
     */
   public static void sqlTreatment(SparkSession spark) {
@@ -63,7 +63,7 @@ class Treatment {
     dfInit.show(false);
   }{% endif %}
 
-    {% if "structured_streaming" is in feature %}/**
+    {% if "structured_streaming" is in spark_feature %}/**
     * Spark Structured Streaming Treatment
     */
   public static void structuredStreamingTreatment(SparkSession spark) {
@@ -86,7 +86,7 @@ class Treatment {
 
   }{% endif %}
 
-    {% if "streaming" is in feature %}/**
+    {% if "streaming" is in spark_feature %}/**
     * Spark streaming treatment to enrich data
     */
   public static void streamingTreatment(JavaStreamingContext ssc ){

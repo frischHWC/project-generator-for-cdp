@@ -10,7 +10,7 @@ echo "*** Starting to launch program ***"
     spark-submit.sh
 {% else %}
 {% if language == "scala" or language == "java" %}
-    hadoop jar {{ project_name }}.jar $@
+    java -jar {{ project_name }}.jar $@
 {% elif language == "python" %}
     unzip python_files.zip
     python App.py
