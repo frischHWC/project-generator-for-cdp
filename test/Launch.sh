@@ -10,12 +10,10 @@
 # Generate project
 python3 main.py \
     --version 7.1.4.0-203 \
-    --language scala \
+    --language python \
     --projectName first_test \
     --packageName com.cloudera.frisch \
-    --compilation true \
-    --compiler sbt \
-    --fatjar true  \
+    --compiler none \
     --kerberos true \
     --principal  dev \
     --keytab /home/dev/dev.keytab \
@@ -27,6 +25,6 @@ python3 main.py \
 
 # Start program with script
 cd ../first_test
-chmod +x src/main/resources/scripts/*
-src/main/resources/scripts/launchFromIDE.sh
+chmod +x resources/scripts/*
+resources/scripts/launchFromIDE.sh
 

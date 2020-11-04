@@ -70,7 +70,7 @@ def order_files(language: str, compiler: str, project_name: str, logger_needed: 
         create_folder(folder_path + "src/")
         files = [f for f in os.listdir(generated_files_path + "/") if ".py" in f and "test" not in f]
         for file in files:
-            copy_file(generated_files_path + "/" + file, folder_path + file)
+            copy_file(generated_files_path + "/" + file, folder_path + "src/" + file)
 
     # Create and order test files folder
     if language == "scala" or language == "java":

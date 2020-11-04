@@ -29,7 +29,8 @@ def main():
                       hdfs_nameservice=dict_of_options.get("hdfsNameservice"),
                       hdfs_work_dir=dict_of_options.get("hdfsWorkDir"),
                       components=dict_of_options.get("components"),
-                      type=dict_of_options.get("type"))
+                      type=dict_of_options.get("type"),
+                      project_name=dict_of_options.get("projectName"))
 
     render_compiler_files(env=env,
                           compiler=dict_of_options.get("compiler"),

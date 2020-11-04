@@ -1,6 +1,6 @@
 
 # TODO : Add other configurations properties here
-app_name = {{ app_name }}
+app_name = "{{ project_name }}"
 
 {% if type == "spark" %}
 master = "yarn"

@@ -15,7 +15,8 @@ def render_code_files(env: Environment,
                       hdfs_nameservice: str,
                       hdfs_work_dir: str,
                       components,
-                      type: str):
+                      type: str,
+                      project_name: str):
     """
     Generate code files according to language and features needed
     :param env:
@@ -52,7 +53,7 @@ def render_code_files(env: Environment,
     write_template_to_file(
             env.get_template("code/" + language + "/AppConfig." + language_extension)
                 .render(spark_feature=spark_feature, package_name=package_name, user=user, hdfsNameservice=hdfs_nameservice,
-                       hdfsWorkDir=hdfs_work_dir, components=components, type=type),
+                        hdfsWorkDir=hdfs_work_dir, components=components, type=type, project_name=project_name),
                 generation_files_path + "/AppConfig." + language_extension)
 
     logger.debug("Generated code files for language : %s with feature : %s", language, spark_feature)
@@ -241,7 +242,7 @@ def render_doc_files(env: Environment,
                      components,
                      type: str):
     """
-    Generate a doc file as a README.md or README.adoc file for the project
+    Generate a doc file as a README.MD or README.ADOC file for the project
     :param env:
     :param language:
     :param feature:

@@ -12,7 +12,8 @@ echo "*** Starting to launch program ***"
 {% if language == "scala" or language == "java" %}
     java -jar {{ project_name }}.jar $@
 {% elif language == "python" %}
-    unzip python_files.zip
+    tar -xvzf python_files.tar
+    cd src/
     python App.py
 {% endif %}
 {% endif %}
