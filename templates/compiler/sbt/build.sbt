@@ -36,7 +36,7 @@ mainClass in assembly := Some("{{ package_name }}.App")
 
 // Fat jar creation
 assemblyMergeStrategy in assembly := {
-  case PathList("META-INF", xs @ _*) => MergeStrategy.discard
+  case PathList("META-INF", "MANIFEST.MF") => MergeStrategy.discard
   case x => MergeStrategy.first
 }
 
