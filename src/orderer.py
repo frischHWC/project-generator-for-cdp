@@ -84,18 +84,21 @@ def order_files(language: str, compiler: str, project_name: str, logger_needed: 
         for file in files:
             copy_file(generated_files_path + "/" + file, folder_path + "test/" + file)
 
-    # Put compiler and doc files
-    files = [f for f in os.listdir(generated_files_path + "/") if ".xml" in f or ".sbt" in f or ".md" in f
-             or ".adoc" in f]
+    # Put doc files
+    files = [f for f in os.listdir(generated_files_path + "/")
+             if ".md" in f or ".adoc" in f]
     for file in files:
         copy_file(generated_files_path + "/" + file, folder_path + file)
 
     # Arrange sbt compiler files
-    if compiler == "sbt":
+    if compiler == "maven":
+        copy_file(generated_files_path + "/pom.xml", folder_path + "pom.xml")
+    elif compiler == "sbt":
         create_folder(folder_path + "project/")
+        copy_file(generated_files_path + "/build.sbt", folder_path + "build.sbt")
         copy_file(generated_files_path + "/build.properties", folder_path + "project/build.properties")
-        move_file(generated_files_path + "/assembly.sbt", folder_path + "project/assembly.sbt")
-        move_file(generated_files_path + "/plugins.sbt", folder_path + "project/plugins.sbt")
+        copy_file(generated_files_path + "/assembly.sbt", folder_path + "project/assembly.sbt")
+        copy_file(generated_files_path + "/plugins.sbt", folder_path + "project/plugins.sbt")
 
     # Make .sh files executable
     sh_files = [f for f in os.listdir(folder_path) if f.endswith(".sh")]

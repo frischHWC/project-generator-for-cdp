@@ -2,7 +2,7 @@
 # TODO : Add other configurations properties here
 app_name = "{{ project_name }}"
 
-{% if type == "spark" %}
+{% if program_type == "spark" %}
 master = "yarn"
 {% if "streaming" or "sql" or "structured_streaming" is in feature %}
 hdfs = "hdfs://{{ hdfsNameservice }}:8020"

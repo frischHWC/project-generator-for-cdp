@@ -84,10 +84,10 @@ def check_files_and_compilation(compiler: str, compilation: bool, project_path: 
     if compilation:
         # Launch a compilation
         if compiler == "maven":
-            logger.info("Launching a mvn package : ")
-            os.system("cd " + project_path + "; mvn package")
+            logger.info("Launching a mvn clean package : ")
+            os.system("cd " + project_path + "; mvn clean package")
         elif compiler == "sbt":
-            logger.info("Launching a sbt assembly : ")
-            os.system("cd " + project_path + "; sbt assembly")
+            logger.info("Launching a sbt clean assembly : ")
+            os.system("cd " + project_path + "; sbt clean assembly")
 
     logger.info("Check on files generated : completed")

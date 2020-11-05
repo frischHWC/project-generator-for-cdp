@@ -10,7 +10,7 @@ object AppConfig {
 
   val name = conf.getString("appName")
 
-  {% if type == "spark" %}
+  {% if program_type == "spark" %}
   val master = conf.getString("master")
 
   val hdfs = conf.getString("hdfs.url")

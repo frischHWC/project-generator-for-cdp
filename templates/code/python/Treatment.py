@@ -1,6 +1,6 @@
 from AppConfig import *
 
-{% if type == "spark" %}
+{% if program_type == "spark" %}
 {% if "core" is in feature %}
 def treatment(sc):
     """

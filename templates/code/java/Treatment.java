@@ -1,7 +1,7 @@
 package {{ package_name }};
 
 {% if logger is sameas true %}import org.apache.log4j.Logger;{% endif %}
-{% if "spark" == type %}
+{% if "spark" == program_type %}
 {% if "core" is in spark_feature %}
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
@@ -29,7 +29,7 @@ class Treatment {
 
   {% if logger is sameas true %}private static Logger logger = Logger.getLogger(Treatment.class);{% endif %}
 
-  {% if "spark" == type %}
+  {% if "spark" == program_type %}
   {% if "core" is in spark_feature %}/**
     * Spark Simple Treatment
     */

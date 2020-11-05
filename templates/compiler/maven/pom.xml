@@ -88,7 +88,7 @@
       <scope>test</scope>
     </dependency> {% endif %}
 
-    {% if "spark" == type %}
+    {% if "spark" == program_type %}
     <!-- Spark dependencies -->
     <dependency>
       <groupId>org.apache.spark</groupId>

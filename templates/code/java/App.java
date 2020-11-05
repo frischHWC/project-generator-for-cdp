@@ -1,7 +1,7 @@
 package {{ package_name }};
 
 {% if logger is sameas true %}import org.apache.log4j.*;{% endif %}
-{% if type == "spark" %}
+{% if "spark" == program_type %}
 {% if "core" is in spark_feature %}
 import org.apache.spark.api.java.JavaSparkContext;
 {% endif %}

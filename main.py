@@ -29,7 +29,7 @@ def main():
                       hdfs_nameservice=dict_of_options.get("hdfsNameservice"),
                       hdfs_work_dir=dict_of_options.get("hdfsWorkDir"),
                       components=dict_of_options.get("components"),
-                      type=dict_of_options.get("type"),
+                      program_type=dict_of_options.get("type"),
                       project_name=dict_of_options.get("projectName"))
 
     render_compiler_files(env=env,
@@ -43,7 +43,7 @@ def main():
                           logger_enabled=dict_of_options.get("logger"),
                           libs=dict_of_options.get("libs"),
                           fat_jar=dict_of_options.get("fatjar"),
-                          type=dict_of_options.get("type"))
+                          program_type=dict_of_options.get("type"))
 
     render_script_files(env=env,
                         language=dict_of_options.get("language"),
@@ -58,7 +58,7 @@ def main():
                         host=dict_of_options.get("host"),
                         user=dict_of_options.get("user"),
                         fat_jar=dict_of_options.get("fatjar"),
-                        type=dict_of_options.get("type"))
+                        program_type=dict_of_options.get("type"))
 
     render_configuration_files(env=env,
                                language=dict_of_options.get("language"),
@@ -70,7 +70,7 @@ def main():
                                hdfs_work_dir=dict_of_options.get("hdfsWorkDir"),
                                components=dict_of_options.get("components"),
                                libs=dict_of_options.get("libs"),
-                               type=dict_of_options.get("type"))
+                               program_type=dict_of_options.get("type"))
 
     render_doc_files(env=env,
                      language=dict_of_options.get("language"),
@@ -80,7 +80,7 @@ def main():
                      project_name=dict_of_options.get("projectName"),
                      doc_type=dict_of_options.get("docFiles"),
                      components=dict_of_options.get("components"),
-                     type=dict_of_options.get("type"))
+                     program_type=dict_of_options.get("type"))
 
     order_files(language=dict_of_options.get("language"),
                 compiler=dict_of_options.get("compiler"),

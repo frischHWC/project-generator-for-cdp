@@ -1,7 +1,7 @@
 package {{ package_name }}
 
 {% if logger is sameas true %}import org.apache.logging.log4j.scala.Logging{% endif %}
-{% if type == "spark" %}
+{% if program_type == "spark" %}
 {% if "core" is in feature %}import org.apache.spark.{SparkConf, SparkContext}{% endif %}
 {% if "sql" is in feature %}import org.apache.spark.sql.SparkSession{% endif %}
 {% if "streaming" is in feature %}import org.apache.spark.streaming.{Seconds, StreamingContext}
@@ -20,7 +20,7 @@ object App {% if logger is sameas true %}extends Logging{% endif %}{
 
     logger.info("Starting application: " + AppConfig.name)
 
-    {% if type == "spark" %}
+    {% if program_type == "spark" %}
     {% if "core" is in feature %} // Create Spark Context
     val conf = new SparkConf().setMaster(AppConfig.master)
       .setAppName(AppConfig.name)
