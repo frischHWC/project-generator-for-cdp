@@ -1,3 +1,4 @@
+{% if logger is sameas true %}import logging{% endif %}
 {% if "spark" == program_type %}
 {% if "core" or "streaming" is in feature %}from pyspark import SparkContext, SparkConf{% endif %}
 {% if "sql" or "structured_streaming" is in feature %}from pyspark.sql import SparkSession{% endif %}
@@ -5,6 +6,7 @@
 {% endif %}
 from Treatment import *
 from AppConfig import *
+
 
 
 def main():
@@ -36,7 +38,7 @@ def main():
     {% endif %}
 
 if __name__ == "__main__":
-    # Prepare logger
+    {% if logger is sameas true %}# Prepare logger
     logger = logging.getLogger("{{ project_name }}")
     logger.setLevel(logging.DEBUG)
 
@@ -51,6 +53,6 @@ if __name__ == "__main__":
     console_handler.setFormatter(formatter)
 
     logger.addHandler(file_handler)
-    logger.addHandler(console_handler)
+    logger.addHandler(console_handler){% endif %}
 
     main()

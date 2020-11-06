@@ -24,7 +24,7 @@ def command_line_arguments_to_dict():
     parser.add_argument('--packageName', required=True, type=str,
                         help="Name of the package where your project will be located (ex: com.cloudera.frisch)")
 
-    parser.add_argument('--compiler', type=str, choices=["maven", "sbt", "none"], default="maven",
+    parser.add_argument('--compiler', type=str, choices=["maven", "sbt", "none"], default="none",
                         help="Compiler to use to compile the project (maven by Default) " +
                              "- Not needed if python is the language")
 
