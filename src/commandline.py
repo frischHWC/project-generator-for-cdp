@@ -55,9 +55,8 @@ def command_line_arguments_to_dict():
     parser.add_argument('--fatjar', type=bool, choices=[True, False], default=True,
                         help="To generate a fat jar or not")
 
-    # TODO : Add some command line optional arguments to handle all different types of clients
     parser.add_argument('--components', type=str, nargs='*',
-                        choices=["none", "hbase", "hdfs", "hive", "kudu", "kafka", "ozone"],
+                        choices=["none", "hbase", "hdfs", "hive", "kafka", "kudu", "ozone", "solr"],
                         default="none",
                         help="Components that program will interact with")
     parser.add_argument('--type', type=str,
@@ -69,10 +68,47 @@ def command_line_arguments_to_dict():
     parser.add_argument('--spark-feature', type=str, nargs='*',
                         choices=["core", "sql", "structured_streaming", "streaming"],
                         default="core", help="Spark Features to add to the project")
-    parser.add_argument('--hdfsNameservice', type=str, default="hdfs",
-                        help="Nameservice of the HDFS")
-    parser.add_argument('--hdfsWorkDir', type=str, default="/tmp",
+    parser.add_argument('--hdfs-workdir', type=str, default="/tmp",
                         help="HDFS work directory setup in configuration files")
+
+    parser.add_argument('--hadoop-user', type=str, default="dev",
+                        help="Hadoop user")
+    parser.add_argument('--hadoop-home', type=str, default="/user/dev",
+                        help="Home of the hadoop user")
+    parser.add_argument('--kerberos-auth', type=bool, choices=[True, False], default=True,
+                        help="if kerberos is used or not")
+    parser.add_argument('--kerberos-user', type=str, default="dev",
+                        help="Kerberos user")
+    parser.add_argument('--kerberos-keytab', type=str, default="/home/dev/dev.keytab",
+                        help="Path on the platform to the Keytab associated to the kerberos user")
+    parser.add_argument('--keystore-location', type=str, default="",
+                        help="Path to the keystore on the platform")
+    parser.add_argument('--keystore-password', type=str, default="",
+                        help="Password of the keystore if there is one")
+    parser.add_argument('--keystore-key-password', type=str, default="",
+                        help="Password of the key of the keystore if there is one")
+    parser.add_argument('--truststore-location', type=str, default="",
+                        help="Path to the trustore")
+    parser.add_argument('--truststore-password', type=str, default="",
+                        help="Password of the truststore if there is one")
+
+    parser.add_argument('--hdfs-nameservice', type=str, default="",
+                        help="Nameservice of the HDFS")
+    parser.add_argument('--zookeeper-quorum', type=str, default="",
+                        help="Zookeeper quorum as servers comma separated and no port")
+    parser.add_argument('--ozone-nameservice', type=str, default="",
+                        help="Nameservice for Ozone")
+    parser.add_argument('--solr-server', type=str, default="",
+                        help="SolR server name with no port")
+    parser.add_argument('--kafka-broker', type=str, default="",
+                        help="List of comma separated servers with port for each")
+    parser.add_argument('--kafka-security-protocol', type=str, default="SASL_PLAINTEXT",
+                        choices=["SSL", "SASL_PLAINTEXT", "PLAINTEXT", "SASL_SSL"],
+                        help="Security protocol for Kafka among: SSL, SASL_PLAINTEXT, SASL_SSL, PLAINTEXT")
+    parser.add_argument('--schema-registry', type=str, default="",
+                        help="Schema registry url with port")
+    parser.add_argument('--kudu-master', type=str, default="",
+                        help="Kudu master servers in a comma separated list")
 
     args = parser.parse_args()
 
@@ -105,6 +141,12 @@ def check_command_lines(dict_of_options: dict):
 
     # Rule #11 : If another type than normal is chosen, no components can be added
 
-    # Rule #12 :
+    # Rule #12 : If protocol of Kafka is secured, kerberos and truststore should be provided
+
+    # Rule #13 :
+
+    # Rule #14 :
+
+    # Rule #15 :
 
     logger.info("Check on arguments passed made")

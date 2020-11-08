@@ -10,7 +10,7 @@
 # Generate project
 python3 main.py \
     --version 7.1.4.0-203 \
-    --language scala \
+    --language java \
     --projectName first_test \
     --packageName com.cloudera.frisch \
     --compilation true \

@@ -125,3 +125,6 @@ resources/scripts/launchFromIDE.sh
 cd ../project-generator-for-cdp
 echo "*******************************"
 sleep 5
+
+
+# TODO: Add tests with components configured to test integration with components

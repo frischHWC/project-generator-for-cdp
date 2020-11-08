@@ -88,6 +88,60 @@
       <scope>test</scope>
     </dependency> {% endif %}
 
+   {% if "hdfs" is in components %}<!-- HDFS -->
+    <dependency>
+       <groupId>org.apache.hadoop</groupId>
+       <artifactId>hadoop-client</artifactId>
+       <version>3.1.1.${cdp.version}</version>
+    </dependency>{% endif %}
+
+    {% if "hbase" is in components %}<!-- HBASE -->
+    <dependency>
+       <groupId>org.apache.hbase</groupId>
+       <artifactId>hbase-client</artifactId>
+       <version>2.2.3.${cdp.version}</version>
+    </dependency>{% endif %}
+
+    {% if "hive" is in components %}<!-- HIVE -->
+    <dependency>
+       <groupId>org.apache.hive</groupId>
+       <artifactId>hive-jdbc</artifactId>
+       <version>3.1.3000.${cdp.version}</version>
+    </dependency>{% endif %}
+
+    {% if "kafka" is in components %}<!-- KAFKA -->
+    <dependency>
+       <groupId>org.apache.kafka</groupId>
+       <artifactId>kafka-clients</artifactId>
+       <version>2.4.1.${cdp.version}</version>
+    </dependency>{% endif %}
+
+    {% if "kudu" is in components %}<!-- KUDU -->
+    <dependency>
+       <groupId>org.apache.kudu</groupId>
+       <artifactId>kudu-client</artifactId>
+       <version>1.12.0.${cdp.version}</version>
+    </dependency>{% endif %}
+
+    {% if "ozone" is in components %} <!-- OZONE -->
+    <dependency>
+       <groupId>org.apache.hadoop</groupId>
+       <artifactId>hadoop-ozone-client</artifactId>
+       <version>0.5.0.${cdp.version}</version>
+    </dependency>
+    <dependency>
+       <groupId>com.google.guava</groupId>
+       <artifactId>guava</artifactId>
+       <version>28.2-jre</version>
+    </dependency>{% endif %}
+
+    {% if "solr" is in components %}<!-- SOLR -->
+    <dependency>
+       <groupId>org.apache.solr</groupId>
+       <artifactId>solr-solrj</artifactId>
+       <version>8.4.1.${cdp.version}</version>
+    </dependency>{% endif %}
+
     {% if "spark" == program_type %}
     <!-- Spark dependencies -->
     <dependency>

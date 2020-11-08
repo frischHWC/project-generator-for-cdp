@@ -21,6 +21,15 @@ libraryDependencies ++= Seq(
   "org.apache.logging.log4j" % "log4j-core" % "2.11.0" % Runtime,
   {% endif %}
 
+  {% if "hdfs" is in components %}"org.apache.hadoop" % "hadoop-client" % ("3.1.1." + cdpVersion),{% endif %}
+  {% if "hbase" is in components %}"org.apache.hbase" % "hbase-client" % ("2.2.3." + cdpVersion),{% endif %}
+  {% if "hive" is in components %}"org.apache.hive" % "hive-jdbc" % ("3.1.3000." + cdpVersion),{% endif %}
+  {% if "kafka" is in components %}"org.apache.kafka" % "kafka-clients" % ("2.4.1." + cdpVersion),{% endif %}
+  {% if "kudu" is in components %}"org.apache.kudu" % "kudu-client" % ("1.12.0." + cdpVersion),{% endif %}
+  {% if "ozone" is in components %}"org.apache.hadoop" % "hadoop-ozone-client" % ("0.5.0." + cdpVersion),
+  "com.google.guava" % "guava" % "28.2-jre",{% endif %}
+  {% if "solr" is in components %}"org.apache.solr" % "solr-solrj" % ("8.4.1." + cdpVersion),{% endif %}
+
   {% if "spark" == program_type %}
   "org.apache.spark" %% "spark-core" % s"${sparkVersion}",{% if "sql" is in feature %}
   "org.apache.spark" %% "spark-sql" % s"${sparkVersion}",{% endif %}{% if "streaming" is in feature %}

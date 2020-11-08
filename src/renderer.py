@@ -12,11 +12,29 @@ def render_code_files(env: Environment,
                       logger_needed: bool,
                       package_name: str,
                       user: str,
-                      hdfs_nameservice: str,
-                      hdfs_work_dir: str,
                       components,
                       program_type: str,
-                      project_name: str):
+                      project_name: str,
+                      haddop_user: str,
+                      hadoop_home: str,
+                      kerberos_auth: str,
+                      kerberos_user: str,
+                      kerberos_keytab: str,
+                      keystore_location: str,
+                      keystore_password: str,
+                      keystore_key_password: str,
+                      truststore_location: str,
+                      truststore_password: str,
+                      hdfs_nameservice: str,
+                      hdfs_work_dir: str,
+                      zookeeper_quorum: str,
+                      ozone_nameservice: str,
+                      solr_server: str,
+                      kafka_broker: str,
+                      kafka_security_protocol: str,
+                      schema_registry: str,
+                      kudu_master: str
+                      ):
     """
         Generate code files according to language and features needed
     :param env:
@@ -25,11 +43,28 @@ def render_code_files(env: Environment,
     :param logger_needed:
     :param package_name:
     :param user:
-    :param hdfs_nameservice:
-    :param hdfs_work_dir:
     :param components:
     :param program_type:
     :param project_name:
+    :param haddop_user:
+    :param hadoop_home:
+    :param kerberos_auth:
+    :param kerberos_user:
+    :param kerberos_keytab:
+    :param keystore_location:
+    :param keystore_password:
+    :param keystore_key_password:
+    :param truststore_location:
+    :param truststore_password:
+    :param hdfs_nameservice:
+    :param hdfs_work_dir:
+    :param zookeeper_quorum:
+    :param ozone_nameservice:
+    :param solr_server:
+    :param kafka_broker:
+    :param kafka_security_protocol:
+    :param schema_registry:
+    :param kudu_master:
     :return:
     """
     if language == "python":
@@ -66,11 +101,28 @@ def render_code_files(env: Environment,
             .render(spark_feature=spark_feature,
                     package_name=package_name,
                     user=user,
-                    hdfsNameservice=hdfs_nameservice,
-                    hdfsWorkDir=hdfs_work_dir,
                     components=components,
                     program_type=program_type,
-                    project_name=project_name),
+                    project_name=project_name,
+                    hadoop_home=hadoop_home,
+                    haddop_user=haddop_user,
+                    kerberos_auth=kerberos_auth,
+                    kerberos_keytab=kerberos_keytab,
+                    kerberos_user=kerberos_user,
+                    keystore_location=keystore_location,
+                    keystore_password=keystore_password,
+                    keystore_key_password=keystore_key_password,
+                    truststore_location=truststore_location,
+                    truststore_password=truststore_password,
+                    hdfs_nameservice=hdfs_nameservice,
+                    zookeeper_quorum=zookeeper_quorum,
+                    ozone_nameservice=ozone_nameservice,
+                    solr_server=solr_server,
+                    kafka_broker=kafka_broker,
+                    kafka_security_protocol=kafka_security_protocol,
+                    schema_registry=schema_registry,
+                    kudu_master=kudu_master
+                    ),
             generated_files_path + "/AppConfig." + language_extension)
 
     logger.debug("Generated code files for language : %s with components : %s", language, str(components))
@@ -236,12 +288,30 @@ def render_configuration_files(env: Environment,
                                spark_feature,
                                project_name: str,
                                user: str,
-                               hdfs_nameservice: str,
                                logger_needed: bool,
-                               hdfs_work_dir: str,
                                components,
                                libs,
-                               program_type: str):
+                               program_type: str,
+                               haddop_user: str,
+                               hadoop_home: str,
+                               kerberos_auth: str,
+                               kerberos_user: str,
+                               kerberos_keytab: str,
+                               keystore_location: str,
+                               keystore_password: str,
+                               keystore_key_password: str,
+                               truststore_location: str,
+                               truststore_password: str,
+                               hdfs_nameservice: str,
+                               hdfs_work_dir: str,
+                               zookeeper_quorum: str,
+                               ozone_nameservice: str,
+                               solr_server: str,
+                               kafka_broker: str,
+                               kafka_security_protocol: str,
+                               schema_registry: str,
+                               kudu_master: str
+                               ):
     """
         Generate configuration file (for logging and external variables)
     :param env:
@@ -249,12 +319,29 @@ def render_configuration_files(env: Environment,
     :param spark_feature:
     :param project_name:
     :param user:
-    :param hdfs_nameservice:
     :param logger_needed:
-    :param hdfs_work_dir:
     :param components:
     :param libs:
     :param program_type:
+    :param haddop_user:
+    :param hadoop_home:
+    :param kerberos_auth:
+    :param kerberos_user:
+    :param kerberos_keytab:
+    :param keystore_location:
+    :param keystore_password:
+    :param keystore_key_password:
+    :param truststore_location:
+    :param truststore_password:
+    :param hdfs_nameservice:
+    :param hdfs_work_dir:
+    :param zookeeper_quorum:
+    :param ozone_nameservice:
+    :param solr_server:
+    :param kafka_broker:
+    :param kafka_security_protocol:
+    :param schema_registry:
+    :param kudu_master:
     :return:
     """
     if logger_needed:
@@ -278,9 +365,26 @@ def render_configuration_files(env: Environment,
             .render(spark_feature=spark_feature,
                     project_name=project_name,
                     user=user,
-                    hdfsNameservice=hdfs_nameservice,
                     hdfsWorkDir=hdfs_work_dir,
-                    components=components),
+                    components=components,
+                    hadoop_home=hadoop_home,
+                    haddop_user=haddop_user,
+                    kerberos_auth=kerberos_auth,
+                    kerberos_keytab=kerberos_keytab,
+                    kerberos_user=kerberos_user,
+                    keystore_location=keystore_location,
+                    keystore_password=keystore_password,
+                    keystore_key_password=keystore_key_password,
+                    truststore_location=truststore_location,
+                    truststore_password=truststore_password,
+                    hdfs_nameservice=hdfs_nameservice,
+                    zookeeper_quorum=zookeeper_quorum,
+                    ozone_nameservice=ozone_nameservice,
+                    solr_server=solr_server,
+                    kafka_broker=kafka_broker,
+                    kafka_security_protocol=kafka_security_protocol,
+                    schema_registry=schema_registry,
+                    kudu_master=kudu_master),
             generated_files_path + "/application.conf")
 
     elif language == "java":
@@ -290,9 +394,27 @@ def render_configuration_files(env: Environment,
             .render(spark_feature=spark_feature,
                     project_name=project_name,
                     user=user,
-                    hdfsNameservice=hdfs_nameservice,
                     hdfsWorkDir=hdfs_work_dir,
-                    components=components),
+                    components=components,
+                    hadoop_home=hadoop_home,
+                    haddop_user=haddop_user,
+                    kerberos_auth=kerberos_auth,
+                    kerberos_keytab=kerberos_keytab,
+                    kerberos_user=kerberos_user,
+                    keystore_location=keystore_location,
+                    keystore_password=keystore_password,
+                    keystore_key_password=keystore_key_password,
+                    truststore_location=truststore_location,
+                    truststore_password=truststore_password,
+                    hdfs_nameservice=hdfs_nameservice,
+                    zookeeper_quorum=zookeeper_quorum,
+                    ozone_nameservice=ozone_nameservice,
+                    solr_server=solr_server,
+                    kafka_broker=kafka_broker,
+                    kafka_security_protocol=kafka_security_protocol,
+                    schema_registry=schema_registry,
+                    kudu_master=kudu_master
+                    ),
             generated_files_path + "/application.properties")
 
     logger.debug("Generated configuration files for language : %s", language)
