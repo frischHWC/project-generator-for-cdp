@@ -51,7 +51,7 @@ public class HdfsClient {
 
   public void read(String path) {
     try(FSDataInputStream fsDataInputStream = fileSystem.open(new Path(path))) {
-      logger.info("File content is: " + fsDataInputStream.readUTF());
+      logger.info("File content is: " + fsDataInputStream.read());
     } catch (IOException e) {
       logger.error("Could not read hdfs file: " + path + " due to error", e);
     }
