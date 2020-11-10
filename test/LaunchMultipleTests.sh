@@ -3,7 +3,7 @@
 # Goal of this is to setup different multiple test
 export HOST=ccycloud-1.sogita.root.hwx.site
 export NAMESERVICE=sogita
-export VERSION=7.1.4.0-203
+export VERSION=7.1.4.0
 
 export USER=root
 export HDFS_WORK_DIR=/user/dev/first_test/
@@ -26,8 +26,8 @@ python3 main.py \
     --components ${COMPONENTS} \
     --host ${HOST} \
     --user ${USER} \
-    --hdfsNameservice ${NAMESERVICE} \
-    --hdfsWorkDir ${HDFS_WORK_DIR} \
+    --hdfs-nameservice ${NAMESERVICE} \
+    --hdfs-workdir ${HDFS_WORK_DIR} \
     \
     --language scala \
     --projectName scala_test_sbt \
@@ -54,8 +54,8 @@ python3 main.py \
     --components ${COMPONENTS} \
     --host ${HOST} \
     --user ${USER} \
-    --hdfsNameservice ${NAMESERVICE} \
-    --hdfsWorkDir ${HDFS_WORK_DIR} \
+    --hdfs-nameservice ${NAMESERVICE} \
+    --hdfs-workdir ${HDFS_WORK_DIR} \
     \
     --language scala \
     --projectName scala_test_maven \
@@ -83,8 +83,8 @@ python3 main.py \
     --components ${COMPONENTS} \
     --host ${HOST} \
     --user ${USER} \
-    --hdfsNameservice ${NAMESERVICE} \
-    --hdfsWorkDir ${HDFS_WORK_DIR} \
+    --hdfs-nameservice ${NAMESERVICE} \
+    --hdfs-workdir ${HDFS_WORK_DIR} \
     \
     --language java \
     --projectName java_test_maven \
@@ -112,8 +112,8 @@ python3 main.py \
     --components ${COMPONENTS} \
     --host ${HOST} \
     --user ${USER} \
-    --hdfsNameservice ${NAMESERVICE} \
-    --hdfsWorkDir ${HDFS_WORK_DIR} \
+    --hdfs-nameservice ${NAMESERVICE} \
+    --hdfs-workdir ${HDFS_WORK_DIR} \
     \
     --language python \
     --projectName python_test_maven

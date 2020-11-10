@@ -66,6 +66,15 @@ def order_files(language: str, compiler: str, project_name: str, logger_needed: 
                   folder_path + "src/main/" + language + "/" + package_path + "/Treatment." + language)
         copy_file(generated_files_path + "/AppConfig." + language,
                   folder_path + "src/main/" + language + "/" + package_path + "config/AppConfig." + language)
+        copy_file(generated_files_path + "/Utils." + language,
+                  folder_path + "src/main/" + language + "/" + package_path + "config/Utils." + language)
+        # Copy client files
+        client_files = [f for f in os.listdir(generated_files_path + "/") if "Client" in f]
+        if client_files.__len__() != 0:
+            create_folder(folder_path + "src/main/" + language + "/" + package_path + "client/")
+        for file in client_files:
+            copy_file(generated_files_path + "/" + file, folder_path + "src/main/" + language + "/" + package_path
+                      + "client/" + file)
     elif language == "python":
         create_folder(folder_path + "src/")
         files = [f for f in os.listdir(generated_files_path + "/") if ".py" in f and "test" not in f]

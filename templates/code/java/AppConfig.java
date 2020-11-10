@@ -1,6 +1,6 @@
 package {{ package_name }}.config;
 
-import org.apache.log4j.Logger;
+{% if logger is sameas true %}import org.apache.log4j.Logger;{% endif %}
 
 import java.io.FileInputStream;
 import java.io.IOException;

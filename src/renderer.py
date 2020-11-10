@@ -15,7 +15,7 @@ def render_code_files(env: Environment,
                       components,
                       program_type: str,
                       project_name: str,
-                      haddop_user: str,
+                      hadoop_user: str,
                       hadoop_home: str,
                       kerberos_auth: str,
                       kerberos_user: str,
@@ -72,9 +72,6 @@ def render_code_files(env: Environment,
     else:
         language_extension = language
 
-    # TODO : Add all components and their features here
-    # TODO: Add different config file, one for each component and one for each client
-
     write_template_to_file(
         env.get_template("code/" + language + "/App." + language_extension)
         .render(language=language,
@@ -97,15 +94,24 @@ def render_code_files(env: Environment,
             generated_files_path + "/Treatment." + language_extension)
 
     write_template_to_file(
+        env.get_template("code/" + language + "/Utils." + language_extension)
+        .render(language=language,
+                logger=logger_needed,
+                package_name=package_name,
+                components=components),
+        generated_files_path + "/Utils." + language_extension)
+
+    write_template_to_file(
             env.get_template("code/" + language + "/AppConfig." + language_extension)
             .render(spark_feature=spark_feature,
                     package_name=package_name,
                     user=user,
+                    logger=logger_needed,
                     components=components,
                     program_type=program_type,
                     project_name=project_name,
                     hadoop_home=hadoop_home,
-                    haddop_user=haddop_user,
+                    hadoop_user=hadoop_user,
                     kerberos_auth=kerberos_auth,
                     kerberos_keytab=kerberos_keytab,
                     kerberos_user=kerberos_user,
@@ -125,6 +131,16 @@ def render_code_files(env: Environment,
                     ),
             generated_files_path + "/AppConfig." + language_extension)
 
+    # TODO: Add clients to each specific component
+    if "hdfs" in components:
+        write_template_to_file(
+            env.get_template("code/" + language + "/HdfsClient." + language_extension)
+            .render(language=language,
+                    logger=logger_needed,
+                    package_name=package_name),
+            generated_files_path + "/HdfsClient." + language_extension)
+
+
     logger.debug("Generated code files for language : %s with components : %s", language, str(components))
 
 
@@ -139,7 +155,16 @@ def render_compiler_files(env: Environment,
                           logger_enabled: bool,
                           libs,
                           fat_jar: bool,
-                          program_type: str):
+                          program_type: str,
+                          hdfs_version: str,
+                          hbase_version: str,
+                          hive_version: str,
+                          flink_version: str,
+                          kafka_version: str,
+                          kudu_version: str,
+                          ozone_version: str,
+                          solr_version: str,
+                          spark_version: str):
     """
         Generate files needed by compiler such as pom.xml or build.sbt
     :param env:
@@ -156,7 +181,6 @@ def render_compiler_files(env: Environment,
     :param program_type:
     :return:
     """
-    # TODO: Add dependencies foreach component in compiler files
     if compiler == "maven":
 
         write_template_to_file(
@@ -170,7 +194,17 @@ def render_compiler_files(env: Environment,
                     logger=logger_enabled,
                     libs=libs,
                     fat_jar=fat_jar,
-                    type=program_type),
+                    type=program_type,
+                    hdfs_version=hdfs_version,
+                    hbase_version=hbase_version,
+                    hive_version=hive_version,
+                    flink_version=flink_version,
+                    kafka_version=kafka_version,
+                    kudu_version=kudu_version,
+                    ozone_version=ozone_version,
+                    solr_version=solr_version,
+                    spark_version=spark_version
+                    ),
             generated_files_path + "/pom.xml")
 
     elif compiler == "sbt":
@@ -185,7 +219,17 @@ def render_compiler_files(env: Environment,
                     libs=libs,
                     fat_jar=fat_jar,
                     program_type=program_type,
-                    package_name=package_name),
+                    package_name=package_name,
+                    hdfs_version=hdfs_version,
+                    hbase_version=hbase_version,
+                    hive_version=hive_version,
+                    flink_version=flink_version,
+                    kafka_version=kafka_version,
+                    kudu_version=kudu_version,
+                    ozone_version=ozone_version,
+                    solr_version=solr_version,
+                    spark_version=spark_version
+                    ),
             generated_files_path + "/build.sbt"
         )
 
@@ -208,7 +252,7 @@ def render_compiler_files(env: Environment,
         )
 
     logger.debug("Generated compiler files for compiler : %s with version : %s " +
-                 "and feature : %s", compiler, version, spark_feature)
+                 "with fat jar generation : %s", compiler, version, fat_jar)
 
 
 def render_script_files(env: Environment,
@@ -292,7 +336,7 @@ def render_configuration_files(env: Environment,
                                components,
                                libs,
                                program_type: str,
-                               haddop_user: str,
+                               hadoop_user: str,
                                hadoop_home: str,
                                kerberos_auth: str,
                                kerberos_user: str,
@@ -356,8 +400,6 @@ def render_configuration_files(env: Environment,
                 .render(project_name=project_name),
                 generated_files_path + "/log4j2.properties")
 
-    # TODO : Add other components configuration here
-    # TODO: Add other configuration for other components in args of function to render proper conf file
     if language == "scala" or "typesafe" in libs:
 
         write_template_to_file(
@@ -368,7 +410,7 @@ def render_configuration_files(env: Environment,
                     hdfsWorkDir=hdfs_work_dir,
                     components=components,
                     hadoop_home=hadoop_home,
-                    haddop_user=haddop_user,
+                    hadoop_user=hadoop_user,
                     kerberos_auth=kerberos_auth,
                     kerberos_keytab=kerberos_keytab,
                     kerberos_user=kerberos_user,
@@ -397,7 +439,7 @@ def render_configuration_files(env: Environment,
                     hdfsWorkDir=hdfs_work_dir,
                     components=components,
                     hadoop_home=hadoop_home,
-                    haddop_user=haddop_user,
+                    hadoop_user=hadoop_user,
                     kerberos_auth=kerberos_auth,
                     kerberos_keytab=kerberos_keytab,
                     kerberos_user=kerberos_user,

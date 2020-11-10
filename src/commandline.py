@@ -14,7 +14,7 @@ def command_line_arguments_to_dict():
                                             "It comes with no license or support, just Enjoy it ;)")
     # Required arguments
     parser.add_argument('--version', required=True, type=str,
-                        choices=["7.1.1.0-565", "7.1.2.0-96", "7.1.3.0-100", "7.1.4.0-203"],
+                        choices=["7.1.1.0", "7.1.2.0", "7.1.3.0", "7.1.4.0"],
                         help="Version of CDP to use")
     parser.add_argument('--language', required=True, type=str,
                         choices=["scala", "java", "python"],
@@ -29,7 +29,7 @@ def command_line_arguments_to_dict():
                              "- Not needed if python is the language")
 
     # Optional arguments
-    parser.add_argument('--kerberos', type=bool, choices=[True, False], default=False,
+    parser.add_argument('--kerberos', type=str2bool, choices=[True, False], default=False,
                         help="Use of Kerberos or not (False by default)" +
                              "- If True, then following options must be filled : --principal and --keytab")
     parser.add_argument('--principal', type=str,
@@ -37,22 +37,22 @@ def command_line_arguments_to_dict():
     parser.add_argument('--keytab', type=str,
                         help="Kerberos keytab file associated with previous principal")
     parser.add_argument('--host', type=str, default="",
-                        help="Host where Spark is deployed " +
-                             "- It is used to prepare script submitting files")
+                        help="Host where Program is deployed " +
+                             "- It is used to prepare script launching files")
     parser.add_argument('--user', type=str, default="",
                         help="User to access Host where Spark is deployed " +
                              "- It is used to prepare script submitting files")
-    parser.add_argument('--test', type=bool, choices=[True, False], default=False,
+    parser.add_argument('--test', type=str2bool, choices=[True, False], default=False,
                         help="Add test files and directories - (False by default)")
-    parser.add_argument('--logger', type=bool, choices=[True, False], default=True,
+    parser.add_argument('--logger', type=str2bool, choices=[True, False], default=True,
                         help="Add logger to project or not - (True by default)")
-    parser.add_argument('--compilation', type=bool, choices=[True, False], default=False,
+    parser.add_argument('--compilation', type=str2bool, choices=[True, False], default=False,
                         help="Launch a compilation/packaging of the project after its creation - (False by default)")
     parser.add_argument('--docFiles', type=str, choices=["md", "adoc"], default="md",
                         help="Type of file to generate documentation files")
     parser.add_argument('--libs', type=str, choices=["typesafe", "lombok"], default=[], nargs='*',
                         help="To include other third party libraries")
-    parser.add_argument('--fatjar', type=bool, choices=[True, False], default=True,
+    parser.add_argument('--fatjar', type=str2bool, choices=[True, False], default=False,
                         help="To generate a fat jar or not")
 
     parser.add_argument('--components', type=str, nargs='*',
@@ -65,54 +65,66 @@ def command_line_arguments_to_dict():
                         help="Program type (normal by default)")
 
     # Related to specific components that will be used
-    parser.add_argument('--spark-feature', type=str, nargs='*',
+    parser.add_argument('--sparkFeature', type=str, nargs='*',
                         choices=["core", "sql", "structured_streaming", "streaming"],
                         default="core", help="Spark Features to add to the project")
-    parser.add_argument('--hdfs-workdir', type=str, default="/tmp",
+    parser.add_argument('--hdfsWorkdir', type=str, default="/tmp",
                         help="HDFS work directory setup in configuration files")
 
-    parser.add_argument('--hadoop-user', type=str, default="dev",
+    parser.add_argument('--hadoopUser', type=str, default="dev",
                         help="Hadoop user")
-    parser.add_argument('--hadoop-home', type=str, default="/user/dev",
+    parser.add_argument('--hadoopHome', type=str, default="/user/dev",
                         help="Home of the hadoop user")
-    parser.add_argument('--kerberos-auth', type=bool, choices=[True, False], default=True,
+    parser.add_argument('--kerberosAuth', type=str2bool, choices=[True, False], default=True,
                         help="if kerberos is used or not")
-    parser.add_argument('--kerberos-user', type=str, default="dev",
+    parser.add_argument('--kerberosUser', type=str, default="dev",
                         help="Kerberos user")
-    parser.add_argument('--kerberos-keytab', type=str, default="/home/dev/dev.keytab",
+    parser.add_argument('--kerberosKeytab', type=str, default="/home/dev/dev.keytab",
                         help="Path on the platform to the Keytab associated to the kerberos user")
-    parser.add_argument('--keystore-location', type=str, default="",
+    parser.add_argument('--keystoreLocation', type=str, default="",
                         help="Path to the keystore on the platform")
-    parser.add_argument('--keystore-password', type=str, default="",
+    parser.add_argument('--keystorePassword', type=str, default="",
                         help="Password of the keystore if there is one")
-    parser.add_argument('--keystore-key-password', type=str, default="",
+    parser.add_argument('--keystoreKeyPassword', type=str, default="",
                         help="Password of the key of the keystore if there is one")
-    parser.add_argument('--truststore-location', type=str, default="",
+    parser.add_argument('--truststoreLocation', type=str, default="",
                         help="Path to the trustore")
-    parser.add_argument('--truststore-password', type=str, default="",
+    parser.add_argument('--truststorePassword', type=str, default="",
                         help="Password of the truststore if there is one")
 
-    parser.add_argument('--hdfs-nameservice', type=str, default="",
+    parser.add_argument('--hdfsNameservice', type=str, default="",
                         help="Nameservice of the HDFS")
-    parser.add_argument('--zookeeper-quorum', type=str, default="",
+    parser.add_argument('--zookeeperQuorum', type=str, default="",
                         help="Zookeeper quorum as servers comma separated and no port")
-    parser.add_argument('--ozone-nameservice', type=str, default="",
+    parser.add_argument('--ozoneNameservice', type=str, default="",
                         help="Nameservice for Ozone")
-    parser.add_argument('--solr-server', type=str, default="",
+    parser.add_argument('--solrServer', type=str, default="",
                         help="SolR server name with no port")
-    parser.add_argument('--kafka-broker', type=str, default="",
+    parser.add_argument('--kafkaBroker', type=str, default="",
                         help="List of comma separated servers with port for each")
-    parser.add_argument('--kafka-security-protocol', type=str, default="SASL_PLAINTEXT",
+    parser.add_argument('--kafkaSecurityProtocol', type=str, default="SASL_PLAINTEXT",
                         choices=["SSL", "SASL_PLAINTEXT", "PLAINTEXT", "SASL_SSL"],
                         help="Security protocol for Kafka among: SSL, SASL_PLAINTEXT, SASL_SSL, PLAINTEXT")
-    parser.add_argument('--schema-registry', type=str, default="",
+    parser.add_argument('--schemaRegistry', type=str, default="",
                         help="Schema registry url with port")
-    parser.add_argument('--kudu-master', type=str, default="",
+    parser.add_argument('--kuduMaster', type=str, default="",
                         help="Kudu master servers in a comma separated list")
 
     args = parser.parse_args()
 
     return args.__dict__
+
+
+# To manipulate properly booleans, it is required to use this function
+def str2bool(v):
+    if isinstance(v, bool):
+        return v
+    if v.lower() in ('yes', 'true', 't', 'y', '1'):
+        return True
+    elif v.lower() in ('no', 'false', 'f', 'n', '0'):
+        return False
+    else:
+        raise argparse.ArgumentTypeError('Boolean value expected.')
 
 
 def check_command_lines(dict_of_options: dict):

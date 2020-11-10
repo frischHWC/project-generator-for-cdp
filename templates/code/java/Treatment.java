@@ -23,6 +23,9 @@ import org.apache.spark.sql.streaming.StreamingQueryException;
 import java.util.Arrays;
 import java.util.List;
 {% endif %}
+{% if "hdfs" is in components %}
+import {{ package_name }}.client.HdfsClient;
+{% endif %}
 
 
 class Treatment {
@@ -107,6 +110,11 @@ class Treatment {
   public static void treatment() {
 
     // TODO: Write code here
+    {% if "hdfs" is in components %}
+    HdfsClient hdfsClient = new HdfsClient();
+    hdfsClient.write("test", "/tmp/test");
+    hdfsClient.read("/tmp/test");
+    {% endif %}
 
   }
   {% endif %}

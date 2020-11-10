@@ -9,24 +9,30 @@
 
 # Generate project
 python3 main.py \
-    --version 7.1.4.0-203 \
+    --version 7.1.4.0 \
     --language java \
-    --projectName first_test \
+    --projectName java_client \
     --packageName com.cloudera.frisch \
-    --compilation true \
-    --logger true \
-    --compiler sbt \
-    --kerberos true \
+    --compilation True \
+    --logger True \
+    --compiler maven \
+    --kerberos True \
     --principal  dev \
     --keytab /home/dev/dev.keytab \
     --components hdfs \
     --host ${HOST} \
     --user ${USER} \
     --hdfsNameservice ${NAMESERVICE} \
-    --hdfsWorkDir ${HDFS_WORK_DIR}
+    --hadoopUser dev \
+    --hadoopHome /user/dev \
+    --kerberosAuth True \
+    --kerberosUser dev@FRISCH.COM \
+    --kerberosKeytab /home/dev/dev.keytab \
+    --fatjar False
+
 
 # Start program with script
-cd ../first_test
+cd ../java_client
 chmod +x src/main/resources/scripts/*
 src/main/resources/scripts/launchFromIDE.sh
 
