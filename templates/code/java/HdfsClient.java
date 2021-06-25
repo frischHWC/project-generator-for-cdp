@@ -28,15 +28,16 @@ public class HdfsClient {
       Utils.loginUserWithKerberos(
           AppConfig.getProperty("kerberos.user"),
           AppConfig.getProperty("kerberos.keytab"), config);
+          config.set("hadoop.security.authentication", "kerberos");
     }
 
-    hdfsUri = URI.create("hdfs://" + AppConfig.getProperty("hdfs.nameservice") + ":" + AppConfig.getProperty("hdfs.port"));
+    hdfsUri = URI.create("hdfs://" + AppConfig.getProperty("hdfs.nameservice") + ":" + AppConfig.getProperty("hdfs.port") + "/");
 
-    logger.debug("Setting up access to HDFS");
+    {% if logger is sameas true %}logger.debug("Setting up access to HDFS");{% endif %}
     try {
       fileSystem = FileSystem.get(hdfsUri, config);
     } catch (IOException e) {
-      logger.error("Could not access to HDFS !", e);
+      {% if logger is sameas true %}logger.error("Could not access to HDFS !", e);{% endif %}
     }
   }
 
@@ -45,15 +46,15 @@ public class HdfsClient {
     try(FSDataOutputStream fsDataOutputStream = fileSystem.create(new Path(path), true)) {
       fsDataOutputStream.writeChars(toWrite);
     } catch (IOException e) {
-      logger.error("Could not write to hdfs: " + toWrite + " due to error", e);
+      {% if logger is sameas true %}logger.error("Could not write to hdfs: " + toWrite + " due to error", e);{% endif %}
     }
   }
 
   public void read(String path) {
     try(FSDataInputStream fsDataInputStream = fileSystem.open(new Path(path))) {
-      logger.info("File content is: " + fsDataInputStream.read());
+      {% if logger is sameas true %}logger.info("File content is: " + fsDataInputStream.read());{% endif %}
     } catch (IOException e) {
-      logger.error("Could not read hdfs file: " + path + " due to error", e);
+      {% if logger is sameas true %}logger.error("Could not read hdfs file: " + path + " due to error", e);{% endif %}
     }
   }
 

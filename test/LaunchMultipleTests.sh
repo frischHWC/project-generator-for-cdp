@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
 # Goal of this is to setup different multiple test
-export HOST=ccycloud-1.sogita.root.hwx.site
-export NAMESERVICE=sogita
-export VERSION=7.1.4.0
+export HOST=
+export NAMESERVICE=
+export VERSION=7.1.6.0
 
 export USER=root
-export HDFS_WORK_DIR=/user/dev/first_test/
+export HDFS_WORK_DIR=/home/dev/first_test/
 export USER=dev
 export KEYTAB=/home/dev/dev.keytab
 # Maybe to change

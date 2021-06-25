@@ -131,7 +131,6 @@ def render_code_files(env: Environment,
                     ),
             generated_files_path + "/AppConfig." + language_extension)
 
-    # TODO: Add clients to each specific component
     if "hdfs" in components:
         write_template_to_file(
             env.get_template("code/" + language + "/HdfsClient." + language_extension)
@@ -140,6 +139,53 @@ def render_code_files(env: Environment,
                     package_name=package_name),
             generated_files_path + "/HdfsClient." + language_extension)
 
+    if "hbase" in components:
+        write_template_to_file(
+            env.get_template("code/" + language + "/HbaseClient." + language_extension)
+            .render(language=language,
+                    logger=logger_needed,
+                    package_name=package_name),
+            generated_files_path + "/HbaseClient." + language_extension)
+
+    if "hive" in components:
+        write_template_to_file(
+            env.get_template("code/" + language + "/HiveClient." + language_extension)
+            .render(language=language,
+                    logger=logger_needed,
+                    package_name=package_name),
+            generated_files_path + "/HiveClient." + language_extension)
+
+    if "kafka" in components:
+        write_template_to_file(
+            env.get_template("code/" + language + "/KafkaClient." + language_extension)
+            .render(language=language,
+                    logger=logger_needed,
+                    package_name=package_name),
+            generated_files_path + "/KafkaClient." + language_extension)
+
+    if "kudu" in components:
+        write_template_to_file(
+            env.get_template("code/" + language + "/KuduClientTest." + language_extension)
+            .render(language=language,
+                    logger=logger_needed,
+                    package_name=package_name),
+            generated_files_path + "/KuduClientTest." + language_extension)
+
+    if "ozone" in components:
+        write_template_to_file(
+            env.get_template("code/" + language + "/OzoneClientTest." + language_extension)
+            .render(language=language,
+                    logger=logger_needed,
+                    package_name=package_name),
+            generated_files_path + "/OzoneClientTest." + language_extension)
+
+    if "solr" in components:
+        write_template_to_file(
+            env.get_template("code/" + language + "/SolRClient." + language_extension)
+            .render(language=language,
+                    logger=logger_needed,
+                    package_name=package_name),
+            generated_files_path + "/SolRClient." + language_extension)
 
     logger.debug("Generated code files for language : %s with components : %s", language, str(components))
 
@@ -354,7 +400,8 @@ def render_configuration_files(env: Environment,
                                kafka_broker: str,
                                kafka_security_protocol: str,
                                schema_registry: str,
-                               kudu_master: str
+                               kudu_master: str,
+                               tls: bool
                                ):
     """
         Generate configuration file (for logging and external variables)
@@ -426,7 +473,9 @@ def render_configuration_files(env: Environment,
                     kafka_broker=kafka_broker,
                     kafka_security_protocol=kafka_security_protocol,
                     schema_registry=schema_registry,
-                    kudu_master=kudu_master),
+                    kudu_master=kudu_master,
+                    tls=tls
+                    ),
             generated_files_path + "/application.conf")
 
     elif language == "java":
@@ -455,7 +504,8 @@ def render_configuration_files(env: Environment,
                     kafka_broker=kafka_broker,
                     kafka_security_protocol=kafka_security_protocol,
                     schema_registry=schema_registry,
-                    kudu_master=kudu_master
+                    kudu_master=kudu_master,
+                    tls=tls
                     ),
             generated_files_path + "/application.properties")
 

@@ -36,9 +36,9 @@ def main():
                       project_name=dict_of_options.get("projectName"),
                       hadoop_home=dict_of_options.get("hadoopHome"),
                       hadoop_user=dict_of_options.get("hadoopUser"),
-                      kerberos_auth=dict_of_options.get("kerberosAuth"),
-                      kerberos_keytab=dict_of_options.get("kerberosKeytab"),
-                      kerberos_user=dict_of_options.get("kerberosUser"),
+                      kerberos_auth=dict_of_options.get("kerberos"),
+                      kerberos_keytab=dict_of_options.get("keytab"),
+                      kerberos_user=dict_of_options.get("principal"),
                       keystore_location=dict_of_options.get("keystoreLocation"),
                       keystore_password=dict_of_options.get("keystorePassword"),
                       keystore_key_password=dict_of_options.get("keystoreKeyPassword"),
@@ -104,9 +104,9 @@ def main():
                                program_type=dict_of_options.get("type"),
                                hadoop_home=dict_of_options.get("hadoopHome"),
                                hadoop_user=dict_of_options.get("hadoopUser"),
-                               kerberos_auth=dict_of_options.get("kerberosAuth"),
-                               kerberos_keytab=dict_of_options.get("kerberosKeytab"),
-                               kerberos_user=dict_of_options.get("kerberosUser"),
+                               kerberos_auth=dict_of_options.get("kerberos"),
+                               kerberos_keytab=dict_of_options.get("keytab"),
+                               kerberos_user=dict_of_options.get("principal"),
                                keystore_location=dict_of_options.get("keystoreLocation"),
                                keystore_password=dict_of_options.get("keystorePassword"),
                                keystore_key_password=dict_of_options.get("keystoreKeyPassword"),
@@ -119,7 +119,8 @@ def main():
                                kafka_broker=dict_of_options.get("kafkaBroker"),
                                kafka_security_protocol=dict_of_options.get("kafkaSecurityProtocol"),
                                schema_registry=dict_of_options.get("schemaRegistry"),
-                               kudu_master=dict_of_options.get("kuduMaster")
+                               kudu_master=dict_of_options.get("kuduMaster"),
+                               tls=dict_of_options.get("tls")
                                )
 
     render_doc_files(env=env,

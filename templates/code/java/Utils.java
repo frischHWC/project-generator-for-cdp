@@ -39,12 +39,12 @@ public class Utils {
     }
 
     /**
-     * Setup haddop env by setting up needed Hadoop system property and adding to configuration required files
+     * Setup hadoop env by setting up needed Hadoop system property and adding to configuration required files
      * @param config Hadoop configuration to set up
      */
     public static void setupHadoopEnv(Configuration config) {
 
-        {% if "hdfs" is in components %}config.addResource(new Path("file://"+ AppConfig.getProperty("hadoop.core.site.path")));
+        {% if "hdfs" is in components or "ozone" is in components %}config.addResource(new Path("file://"+ AppConfig.getProperty("hadoop.core.site.path")));
         config.addResource(new Path("file://"+ AppConfig.getProperty("hadoop.hdfs.site.path")));{% endif %}
         {% if "ozone" is in components %}config.addResource(new Path("file://"+ AppConfig.getProperty("hadoop.ozone.site.path")));{% endif %}
         {% if "hbase" is in components %}config.addResource(new Path("file://"+ AppConfig.getProperty("hadoop.hbase.site.path")));{% endif %}

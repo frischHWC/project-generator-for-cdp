@@ -24,8 +24,19 @@ import java.util.Arrays;
 import java.util.List;
 {% endif %}
 {% if "hdfs" is in components %}
-import {{ package_name }}.client.HdfsClient;
-{% endif %}
+import {{ package_name }}.client.HdfsClient;{% endif %}
+{% if "hbase" is in components %}
+import {{ package_name }}.client.HbaseClient;{% endif %}
+{% if "hive" is in components %}
+import {{ package_name }}.client.HiveClient;{% endif %}
+{% if "kafka" is in components %}
+import {{ package_name }}.client.KafkaClient;{% endif %}
+{% if "kudu" is in components %}
+import {{ package_name }}.client.KuduClientTest;{% endif %}
+{% if "solr" is in components %}
+import {{ package_name }}.client.SolRClient;{% endif %}
+{% if "ozone" is in components %}
+import {{ package_name }}.client.OzoneClientTest;{% endif %}
 
 
 class Treatment {
@@ -114,6 +125,42 @@ class Treatment {
     HdfsClient hdfsClient = new HdfsClient();
     hdfsClient.write("test", "/tmp/test");
     hdfsClient.read("/tmp/test");
+    {% endif %}
+
+    {% if "hbase" is in components %}
+    HbaseClient hbaseClient = new HbaseClient();
+    hbaseClient.write("namespace", "tableName", "columnFamily", "col1", "col2", "value1", "value2", "key");
+    hbaseClient.read("namespace", "tableName", "columnFamily", "col1", "key");
+    {% endif %}
+
+    {% if "ozone" is in components %}
+    OzoneClientTest ozoneClient = new OzoneClientTest();
+    ozoneClient.write("volumename", "bucketname", "key", "value");
+    ozoneClient.read("volumename", "bucketname", "key");
+    {% endif %}
+
+    {% if "hive" is in components %}
+    HiveClient hiveClient = new HiveClient();
+    hiveClient.write("test");
+    hiveClient.read("test");
+    {% endif %}
+
+    {% if "kafka" is in components %}
+    KafkaClient kafkaClient = new KafkaClient();
+    kafkaClient.write("key", "value", "topic_test");
+    kafkaClient.read("topic_test");
+    {% endif %}
+
+    {% if "kudu" is in components %}
+    KuduClientTest kuduClient = new KuduClientTest();
+    kuduClient.write("hashkey", "tablename", "value1");
+    kuduClient.read("tablename");
+    {% endif %}
+
+    {% if "solr" is in components %}
+    SolRClient solrClient = new SolRClient();
+    solrClient.write("test");
+    solrClient.read("test");
     {% endif %}
 
   }

@@ -22,7 +22,7 @@ public class App {
    {% if logger is sameas true %}private static Logger logger = Logger.getLogger(App.class);{% endif %}
 
   /**
-    * Main function that creates a SparkContext and launches treatment
+    * Main function that launches treatment
     */
   public static void main(String[] args) {
 

@@ -112,6 +112,11 @@
        <groupId>org.apache.hive</groupId>
        <artifactId>hive-jdbc</artifactId>
        <version>{{ hive_version }}.${cdp.version}</version>
+    </dependency>
+      <dependency>
+       <groupId>org.apache.hadoop</groupId>
+       <artifactId>hadoop-client</artifactId>
+       <version>{{ hdfs_version }}.${cdp.version}</version>
     </dependency>{% endif %}
 
     {% if "kafka" is in components %}<!-- KAFKA -->
@@ -119,13 +124,23 @@
        <groupId>org.apache.kafka</groupId>
        <artifactId>kafka-clients</artifactId>
        <version>{{ kafka_version }}.${cdp.version}</version>
-    </dependency>{% endif %}
+    </dependency>
+    <dependency>
+       <groupId>org.apache.hadoop</groupId>
+       <artifactId>hadoop-client</artifactId>
+       <version>{{ hdfs_version }}.${cdp.version}</version>
+    </dependency>  {% endif %}
 
     {% if "kudu" is in components %}<!-- KUDU -->
     <dependency>
        <groupId>org.apache.kudu</groupId>
        <artifactId>kudu-client</artifactId>
        <version>{{ kudu_version }}.${cdp.version}</version>
+    </dependency>
+      <dependency>
+       <groupId>org.apache.hadoop</groupId>
+       <artifactId>hadoop-client</artifactId>
+       <version>{{ hdfs_version }}.${cdp.version}</version>
     </dependency>{% endif %}
 
     {% if "ozone" is in components %} <!-- OZONE -->
@@ -145,6 +160,11 @@
        <groupId>org.apache.solr</groupId>
        <artifactId>solr-solrj</artifactId>
        <version>{{ solr_version }}.${cdp.version}</version>
+    </dependency>
+    <dependency>
+       <groupId>org.apache.hadoop</groupId>
+       <artifactId>hadoop-client</artifactId>
+       <version>{{ hdfs_version }}.${cdp.version}</version>
     </dependency>{% endif %}
 
     {% if "spark" == program_type %}

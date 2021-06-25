@@ -39,7 +39,7 @@ def clean_directory(folder_path: str):
     :return:
     """
     try:
-        if os.path.exists("/tmp/target/"):
+        if os.path.exists(folder_path):
             shutil.rmtree(folder_path)
     except FileNotFoundError as e:
         logger.warning("Folder does not exists !")

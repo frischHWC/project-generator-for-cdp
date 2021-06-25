@@ -14,7 +14,7 @@ def command_line_arguments_to_dict():
                                             "It comes with no license or support, just Enjoy it ;)")
     # Required arguments
     parser.add_argument('--version', required=True, type=str,
-                        choices=["7.1.1.0", "7.1.2.0", "7.1.3.0", "7.1.4.0"],
+                        choices=["7.1.1.0", "7.1.2.0", "7.1.3.0", "7.1.4.0", "7.1.5.0", "7.1.6.0"],
                         help="Version of CDP to use")
     parser.add_argument('--language', required=True, type=str,
                         choices=["scala", "java", "python"],
@@ -29,6 +29,9 @@ def command_line_arguments_to_dict():
                              "- Not needed if python is the language")
 
     # Optional arguments
+    parser.add_argument('--tls', type=str2bool, choices=[True, False], default=False,
+                        help="Use of TLS or not (False by default)" +
+                             "- If True, then following options must be filled : --truststoreLocation and --truststorePassword")
     parser.add_argument('--kerberos', type=str2bool, choices=[True, False], default=False,
                         help="Use of Kerberos or not (False by default)" +
                              "- If True, then following options must be filled : --principal and --keytab")
@@ -75,12 +78,6 @@ def command_line_arguments_to_dict():
                         help="Hadoop user")
     parser.add_argument('--hadoopHome', type=str, default="/user/dev",
                         help="Home of the hadoop user")
-    parser.add_argument('--kerberosAuth', type=str2bool, choices=[True, False], default=True,
-                        help="if kerberos is used or not")
-    parser.add_argument('--kerberosUser', type=str, default="dev",
-                        help="Kerberos user")
-    parser.add_argument('--kerberosKeytab', type=str, default="/home/dev/dev.keytab",
-                        help="Path on the platform to the Keytab associated to the kerberos user")
     parser.add_argument('--keystoreLocation', type=str, default="",
                         help="Path to the keystore on the platform")
     parser.add_argument('--keystorePassword', type=str, default="",
