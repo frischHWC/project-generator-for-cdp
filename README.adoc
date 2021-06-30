@@ -1,6 +1,9 @@
 = Project Generator for CDP
 
-This project aims at generate automatically new Spark project depending on language, compiler, features required by the user.
+This project aims at generate automatically new projects for CDP depending on language, compiler, components to interact with, required by the user.
+
+It will generate project structure, required files and dependencies, hence providing a fully complete (logging, configuration and security setup) project, ready to be launch to a CDP platform.
+Each project will consist of a simple reader and writer to the component chosen.
 
 == How to use it ?
 
@@ -12,6 +15,7 @@ If not install, please see this : https://realpython.com/installing-python/[http
 - Jinja2 must be installed also
 
 If not, you can install it with :
+
 [source,bash]
 pip3 install jinja2
 
@@ -20,49 +24,183 @@ pip3 install jinja2
 The command is described here (extracted from documentation) :
 
 [source,bash]
-usage: main.py [-h] --version {2.4.1,2.2.0}
-                --master {yarn}
-                --language {scala,java}
-                --projectName PROJECTNAME
-                --packageName PACKAGENAME
-                [--kerberos {True,False}]
-                [--principal PRINCIPAL]
-                [--keytab KEYTAB]
-                [--host HOST]
-                [--user USER]
-                [--compiler {maven,sbt}]
-                [--feature [{core,sql,structured_streaming,streaming} [{core,sql,structured_streaming,streaming} ...]]]
-                [--techs {}]
-                [--test {True,False}]
-                [--logger {True,False}]
-                [--compilation {True,False}]
-                [--sendFiles {True,False}]
-                [--docFiles {md,adoc}]
+usage: main.py [-h] --version {7.1.1.0,7.1.2.0,7.1.3.0,7.1.4.0,7.1.5.0,7.1.6.0}
+               --language {scala,java,python}
+               --projectName PROJECTNAME
+               --packageName PACKAGENAME
+               [--compiler {maven,sbt,none}]
+               [--tls {True,False}]
+               [--kerberos {True,False}]
+               [--principal PRINCIPAL]
+               [--keytab KEYTAB]
+               [--host HOST]
+               [--user USER]
+               [--test {True,False}]
+               [--logger {True,False}]
+               [--compilation {True,False}]
+               [--docFiles {md,adoc}]
+               [--libs [{typesafe,lombok} [{typesafe,lombok} ...]]]
+               [--fatjar {True,False}]
+               [--components [{none,hbase,hdfs,hive,kafka,kudu,ozone,solr} [{none,hbase,hdfs,hive,kafka,kudu,ozone,solr} ...]]]
+               [--type {normal,spark,kafkastream,flink}]
+               [--sparkFeature [{core,sql,structured_streaming,streaming} [{core,sql,structured_streaming,streaming} ...]]]
+               [--hdfsWorkdir HDFSWORKDIR]
+               [--hadoopUser HADOOPUSER]
+               [--hadoopHome HADOOPHOME]
+               [--keystoreLocation KEYSTORELOCATION]
+               [--keystorePassword KEYSTOREPASSWORD]
+               [--keystoreKeyPassword KEYSTOREKEYPASSWORD]
+               [--truststoreLocation TRUSTSTORELOCATION]
+               [--truststorePassword TRUSTSTOREPASSWORD]
+               [--hdfsNameservice HDFSNAMESERVICE]
+               [--zookeeperQuorum ZOOKEEPERQUORUM]
+               [--ozoneNameservice OZONENAMESERVICE]
+               [--solrServer SOLRSERVER]
+               [--kafkaBroker KAFKABROKER]
+               [--kafkaSecurityProtocol {SSL,SASL_PLAINTEXT,PLAINTEXT,SASL_SSL}]
+               [--schemaRegistry SCHEMAREGISTRY]
+               [--kuduMaster KUDUMASTER]
 
 Here are some examples of launch :
 
-- Scala maven project with Spark-SQL :
 
-[source,bash]
-python3 main.py --version 2.4.1 --master yarn --language scala --projectName spark_test --packageName com.cloudera.fri --feature sql
+A Java program interacting with HDFS on CDP 7.1.6.0  :
+
+[source, bash]
+python3 main.py \
+    --version 7.1.6.0 \
+    --language java \
+    --projectName hdfs_example \
+    --packageName com.cloudera.frisch \
+    --logger True \
+    --compiler maven \
+    --hdfsNameservice ${NAMESERVICE} \
+    --hadoopUser dev \
+    --hadoopHome /user/dev \
+    --components hdfs
 
 
-- Scala maven project with Spark Core and Spark Structured Streaming, and Kerberos enabled :
+A Java program interacting with HBase, using Kerberos and that will be deployed to the cluster once generated and compiled :
 
-[source,bash]
-python3 main.py --version 2.4.1 --kerberos True --master yarn --language scala --projectName spark_test --packageName com.cloudera.fri --feature core structured_streaming  --principal fri --keytab fri.keytab
+[source, bash]
+python3 main.py \
+    --version 7.1.6.0 \
+    --language java \
+    --projectName hbase_example \
+    --packageName com.cloudera.frisch \
+    --compilation True \
+    --logger True \
+    --compiler maven \
+    --kerberos True \
+    --principal dev@FRISCH.COM \
+    --keytab /home/dev/dev.keytab \
+    --host ${HOST} \
+    --user ${USER} \
+    --zookeeperQuorum host1,host2,host3 \
+    --components hbase
 
 
-- Scala sbt project with Spark Streaming, ready to launch on cluster :
+A Java program interacting with Kudu, using Kerberos:
 
-[source,bash]
-python3 main.py --version 2.4.1 --master yarn --language scala --projectName spark_test --packageName com.cloudera.fri --compiler sbt --compilation true --sendFiles true --feature streaming --host fri.machine.com --user fri
+[source, bash]
+python3 main.py \
+    --version 7.1.6.0 \
+    --language java \
+    --projectName kudu_example \
+    --packageName com.cloudera.frisch \
+    --compilation True \
+    --logger True \
+    --compiler maven \
+    --kerberos True \
+    --principal dev@FRISCH.COM \
+    --keytab /home/dev/dev.keytab \
+    --kuduMaster host1,host2,host3 \
+    --components kudu
 
 
-- Java maven project with Spark core, ready to launch on cluster :
+A Java program interacting with Hive, using Kerberos:
 
-[source,bash]
-python3 main.py --version 2.4.1 --master yarn --language java --projectName spark_test --packageName com.cloudera.fri --compilation true --sendFiles true --host fri.machine.com --user fri
+[source, bash]
+python3 main.py \
+    --version 7.1.6.0 \
+    --language java \
+    --projectName hive_example \
+    --packageName com.cloudera.frisch \
+    --compilation True \
+    --logger True \
+    --compiler maven \
+    --kerberos True \
+    --principal dev@FRISCH.COM \
+    --keytab /home/dev/dev.keytab \
+    --zookeeperQuorum host1,host2,host3 \
+    --components hive
+
+
+A Java program interacting with Ozone, using Kerberos:
+
+[source, bash]
+python3 main.py \
+    --version 7.1.6.0 \
+    --language java \
+    --projectName ozone_example \
+    --packageName com.cloudera.frisch \
+    --compilation True \
+    --logger True \
+    --compiler maven \
+    --kerberos True \
+    --principal dev@FRISCH.COM \
+    --keytab /home/dev/dev.keytab \
+    --ozoneNameservice ${NAMESERVICE} \
+    --components ozone
+
+
+A Java program interacting with SolR, using Kerberos:
+
+[source, bash]
+python3 main.py \
+    --version 7.1.6.0 \
+    --language java \
+    --projectName solr_example \
+    --packageName com.cloudera.frisch \
+    --compilation True \
+    --logger True \
+    --compiler maven \
+    --kerberos True \
+    --principal dev@FRISCH.COM \
+    --keytab /home/dev/dev.keytab \
+    --solrServer host1 \
+    --components solr
+
+
+
+A Java program interacting with Kafka using Keberos and SSL :
+
+[source, bash]
+python3 main.py \
+    --version 7.1.6.0 \
+    --language java \
+    --projectName java_client \
+    --packageName com.cloudera.frisch \
+    --logger True \
+    --compiler maven \
+    --kerberos True \
+    --principal dev@FRISCH.COM \
+    --keytab /home/dev/dev.keytab \
+    --host ${HOST} \
+    --user ${USER} \
+    --tls True \
+    --truststoreLocation /var/lib/cloudera-scm-agent/agent-cert/cm-auto-global_truststore.jks \
+    --truststorePassword ${TRUSTSTORE_PASSWORD} \
+    --keystoreLocation /var/lib/cloudera-scm-agent/agent-cert/cm-auto-host_keystore.jks \
+    --keystorePassword ${KEYSTORE_PASSWORD} \
+    --keystoreKeyPassword  ${KEYSTORE_PASSWORD} \
+    --zookeeperQuorum host1,host2,host3 \
+    --kafkaBroker host1:9093,host2:9093,host3:9093 \
+    --kafkaSecurityProtocol SASL_SSL \
+    --components kafka
+
+
+A Java program
 
 
 === Where my project has been generated ?
@@ -76,67 +214,85 @@ Documentation is generated with a 'python3 main.py -h'.
 
 [source,bash]
 ----
-usage: main.py [-h] --version
-               {2.4.0.7.1.1.0-565,2.4.1,2.2.0,2.3.0,2.3.1,2.3.2,2.3.3}
-               --master {yarn} --language {scala,java,python} --projectName
-               PROJECTNAME --packageName PACKAGENAME [--kerberos {True,False}]
-               [--principal PRINCIPAL] [--keytab KEYTAB] [--host HOST]
-               [--user USER] [--compiler {maven,sbt,none}]
-               [--feature [{core,sql,structured_streaming,streaming} [{core,sql,structured_streaming,streaming} ...]]]
-               [--techs {}] [--test {True,False}] [--logger {True,False}]
-               [--compilation {True,False}] [--sendFiles {True,False}]
-               [--docFiles {md,adoc}] [--hdfsNameservice HDFSNAMESERVICE]
-               [--hdfsWorkDir HDFSWORKDIR]
+usage: main.py [-h] --version {7.1.1.0,7.1.2.0,7.1.3.0,7.1.4.0,7.1.5.0,7.1.6.0} --language {scala,java,python} --projectName PROJECTNAME --packageName PACKAGENAME [--compiler {maven,sbt,none}]
+               [--tls {True,False}] [--kerberos {True,False}] [--principal PRINCIPAL] [--keytab KEYTAB] [--host HOST] [--user USER] [--test {True,False}] [--logger {True,False}]
+               [--compilation {True,False}] [--docFiles {md,adoc}] [--libs [{typesafe,lombok} [{typesafe,lombok} ...]]] [--fatjar {True,False}]
+               [--components [{none,hbase,hdfs,hive,kafka,kudu,ozone,solr} [{none,hbase,hdfs,hive,kafka,kudu,ozone,solr} ...]]] [--type {normal,spark,kafkastream,flink}]
+               [--sparkFeature [{core,sql,structured_streaming,streaming} [{core,sql,structured_streaming,streaming} ...]]] [--hdfsWorkdir HDFSWORKDIR] [--hadoopUser HADOOPUSER] [--hadoopHome HADOOPHOME]
+               [--keystoreLocation KEYSTORELOCATION] [--keystorePassword KEYSTOREPASSWORD] [--keystoreKeyPassword KEYSTOREKEYPASSWORD] [--truststoreLocation TRUSTSTORELOCATION]
+               [--truststorePassword TRUSTSTOREPASSWORD] [--hdfsNameservice HDFSNAMESERVICE] [--zookeeperQuorum ZOOKEEPERQUORUM] [--ozoneNameservice OZONENAMESERVICE] [--solrServer SOLRSERVER]
+               [--kafkaBroker KAFKABROKER] [--kafkaSecurityProtocol {SSL,SASL_PLAINTEXT,PLAINTEXT,SASL_SSL}] [--schemaRegistry SCHEMAREGISTRY] [--kuduMaster KUDUMASTER]
 
-Generate a Spark project in language, version, and compiler needed
+Generate a project in language, version, and compiler needed
 
 optional arguments:
   -h, --help            show this help message and exit
-  --version {2.4.0.7.1.1.0-565,2.4.1,2.2.0,2.3.0,2.3.1,2.3.2,2.3.3}
-                        Version of Spark to use
-  --master {yarn}       Master that Spark should use
+  --version {7.1.1.0,7.1.2.0,7.1.3.0,7.1.4.0,7.1.5.0,7.1.6.0}
+                        Version of CDP to use
   --language {scala,java,python}
                         Programming Language to write code
   --projectName PROJECTNAME
                         Name of the project to create (ex : rocket-launcher)
   --packageName PACKAGENAME
-                        Name of the package where your project will be located
-                        (ex: com.cloudera.frisch)
+                        Name of the package where your project will be located (ex: com.cloudera.frisch)
+  --compiler {maven,sbt,none}
+                        Compiler to use to compile the project (maven by Default) - Not needed if python is the language
+  --tls {True,False}    Use of TLS or not (False by default)- If True, then following options must be filled : --truststoreLocation and --truststorePassword
   --kerberos {True,False}
-                        Use of Kerberos or not (False by default)- If True,
-                        then following options must be filled : --principal
-                        and --keytab
+                        Use of Kerberos or not (False by default)- If True, then following options must be filled : --principal and --keytab
   --principal PRINCIPAL
                         Kerberos principal
-  --keytab KEYTAB       Kerberos keytab file associated with previous
-                        principal
-  --host HOST           Host where Spark is deployed - It is used to prepare
-                        script submitting files
-  --user USER           User to access Host where Spark is deployed - It is
-                        used to prepare script submitting files
-  --compiler {maven,sbt,none}
-                        Compiler to use to compile the project (maven by
-                        Default) - Not needed if python is the language
-  --feature [{core,sql,structured_streaming,streaming} [{core,sql,structured_streaming,streaming} ...]]
-                        Spark Features to add to the project
-  --techs {}            Other technologies to add to the project
+  --keytab KEYTAB       Kerberos keytab file associated with previous principal
+  --host HOST           Host where Program is deployed - It is used to prepare script launching files
+  --user USER           User to access Host where Spark is deployed - It is used to prepare script submitting files
   --test {True,False}   Add test files and directories - (False by default)
   --logger {True,False}
                         Add logger to project or not - (True by default)
   --compilation {True,False}
-                        Launch a compilation/packaging of the project after
-                        its creation - (False by default)
-  --sendFiles {True,False}
-                        Send project files after creation and packaging
-                        (requires compilation argument to be set to True) -
-                        (False by default)
+                        Launch a compilation/packaging of the project after its creation - (False by default)
   --docFiles {md,adoc}  Type of file to generate documentation files
-  --hdfsNameservice HDFSNAMESERVICE
-                        Nameservice of the HDFS where Spark files will be
-                        deployed
-  --hdfsWorkDir HDFSWORKDIR
+  --libs [{typesafe,lombok} [{typesafe,lombok} ...]]
+                        To include other third party libraries
+  --fatjar {True,False}
+                        To generate a fat jar or not
+  --components [{none,hbase,hdfs,hive,kafka,kudu,ozone,solr} [{none,hbase,hdfs,hive,kafka,kudu,ozone,solr} ...]]
+                        Components that program will interact with
+  --type {normal,spark,kafkastream,flink}
+                        Program type (normal by default)
+  --sparkFeature [{core,sql,structured_streaming,streaming} [{core,sql,structured_streaming,streaming} ...]]
+                        Spark Features to add to the project
+  --hdfsWorkdir HDFSWORKDIR
                         HDFS work directory setup in configuration files
+  --hadoopUser HADOOPUSER
+                        Hadoop user
+  --hadoopHome HADOOPHOME
+                        Home of the hadoop user
+  --keystoreLocation KEYSTORELOCATION
+                        Path to the keystore on the platform
+  --keystorePassword KEYSTOREPASSWORD
+                        Password of the keystore if there is one
+  --keystoreKeyPassword KEYSTOREKEYPASSWORD
+                        Password of the key of the keystore if there is one
+  --truststoreLocation TRUSTSTORELOCATION
+                        Path to the trustore
+  --truststorePassword TRUSTSTOREPASSWORD
+                        Password of the truststore if there is one
+  --hdfsNameservice HDFSNAMESERVICE
+                        Nameservice of the HDFS
+  --zookeeperQuorum ZOOKEEPERQUORUM
+                        Zookeeper quorum as servers comma separated and no port
+  --ozoneNameservice OZONENAMESERVICE
+                        Nameservice for Ozone
+  --solrServer SOLRSERVER
+                        SolR server name with no port
+  --kafkaBroker KAFKABROKER
+                        List of comma separated servers with port for each
+  --kafkaSecurityProtocol {SSL,SASL_PLAINTEXT,PLAINTEXT,SASL_SSL}
+                        Security protocol for Kafka among: SSL, SASL_PLAINTEXT, SASL_SSL, PLAINTEXT
+  --schemaRegistry SCHEMAREGISTRY
+                        Schema registry url with port
+  --kuduMaster KUDUMASTER
+                        Kudu master servers in a comma separated list
 
-This program is intent to facilitate Spark developer's life.It comes with no
-license or support, just Enjoy it ;)
+This program is intent to facilitate developer's life for CDP.It comes with no license or support, just Enjoy it ;)
 ----
