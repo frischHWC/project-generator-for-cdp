@@ -7,6 +7,7 @@ package {{ package_name }}
 {% if "streaming" is in feature %}import org.apache.spark.streaming.StreamingContext{% endif %}
 {% endif %}
 
+import {{ package_name }}.client.HdfsClient
 
 object Treatment {% if logger is sameas true %}extends Logging{% endif %}{
 
@@ -74,6 +75,54 @@ object Treatment {% if logger is sameas true %}extends Logging{% endif %}{
     })
 
   }{% endif %}
+  {% else %}
+
+  def treatment(): Unit = {
+
+    // TODO: Write code here
+    {% if "hdfs" is in components %}
+    val hdfsClient = HdfsClient.apply()
+    hdfsClient.write("test", "/tmp/test")
+    hdfsClient.read("/tmp/test")
+    {% endif %}
+
+    {% if "hbase" is in components %}
+    val hbaseClient = HbaseClient.apply()
+    hbaseClient.write("namespace", "tableName", "columnFamily", "col1", "col2", "value1", "value2", "key")
+    hbaseClient.read("namespace", "tableName", "columnFamily", "col1", "key")
+    {% endif %}
+
+    {% if "ozone" is in components %}
+    val ozoneClient = OzoneClientTest.apply()
+    ozoneClient.write("volumename", "bucketname", "key", "value")
+    ozoneClient.read("volumename", "bucketname", "key")
+    {% endif %}
+
+    {% if "hive" is in components %}
+    val hiveClient = HiveClient.apply()
+    hiveClient.write("test")
+    hiveClient.read("test")
+    {% endif %}
+
+    {% if "kafka" is in components %}
+    val kafkaClient = KafkaClient.apply()
+    kafkaClient.write("key", "value", "topic_test")
+    kafkaClient.read("topic_test")
+    {% endif %}
+
+    {% if "kudu" is in components %}
+    val kuduClient = KuduClientTest.apply()
+    kuduClient.write("hashkey", "tablename", "value1")
+    kuduClient.read("tablename")
+    {% endif %}
+
+    {% if "solr" is in components %}
+    val solrClient = SolRClient.apply()
+    solrClient.write("test")
+    solrClient.read("test")
+    {% endif %}
+
+  }
   {% endif %}
 
 }

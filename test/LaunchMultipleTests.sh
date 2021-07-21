@@ -12,7 +12,7 @@ export KEYTAB=/home/dev/dev.keytab
 # Maybe to change
 export COMPONENTS=hdfs
 
-# Add more tests below when more features are available to test
+# TODO: Add more tests below when more features are available to test
 
 echo "*******************************"
 echo "***** Scala Test with SBT *****"

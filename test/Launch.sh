@@ -11,12 +11,13 @@
 # Generate project
 /usr/local/Cellar/python@3.9/3.9.1_6/bin/python3 main.py \
     --version 7.1.6.0 \
-    --language java \
-    --projectName java_client \
+    --language scala \
+    --projectName scala_hdfs_client \
     --packageName com.cloudera.frisch \
     --compilation True \
     --logger True \
     --compiler maven \
+    --fatjar true \
     \
     --tls True \
     --kerberos True \
@@ -41,11 +42,11 @@
     --kafkaSecurityProtocol SASL_SSL \
     --schemaRegistry ccycloud-2.${NAMESERVICE}.root.hwx.site:7790 \
     --kuduMaster ccycloud-2.${NAMESERVICE}.root.hwx.site,ccycloud-3.${NAMESERVICE}.root.hwx.site,ccycloud-10.${NAMESERVICE}.root.hwx.site \
-    --components kafka
+    --components hdfs
 
 
 # Start program with script
-cd ../java_client
+cd ../scala_hdfs_client
 chmod +x src/main/resources/scripts/*
 src/main/resources/scripts/launchFromIDE.sh
 

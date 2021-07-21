@@ -50,6 +50,10 @@ object App {% if logger is sameas true %}extends Logging{% endif %}{
 
     ssc.start()             // Start the computation
     ssc.awaitTermination()  // Wait for the computation to terminate {% endif %}
+    {% else %}
+
+    Treatment.treatment()
+
     {% endif %}
 
     logger.info("Finished application: "  + AppConfig.name)

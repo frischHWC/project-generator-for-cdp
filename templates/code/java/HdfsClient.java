@@ -44,7 +44,7 @@ public class HdfsClient {
 
   public void write(String toWrite, String path) {
     try(FSDataOutputStream fsDataOutputStream = fileSystem.create(new Path(path), true)) {
-      fsDataOutputStream.writeChars(toWrite);
+      fsDataOutputStream.writeUTF(toWrite);
     } catch (IOException e) {
       {% if logger is sameas true %}logger.error("Could not write to hdfs: " + toWrite + " due to error", e);{% endif %}
     }
@@ -52,7 +52,7 @@ public class HdfsClient {
 
   public void read(String path) {
     try(FSDataInputStream fsDataInputStream = fileSystem.open(new Path(path))) {
-      {% if logger is sameas true %}logger.info("File content is: " + fsDataInputStream.read());{% endif %}
+      {% if logger is sameas true %}logger.info("File content is: " + fsDataInputStream.readUTF());{% endif %}
     } catch (IOException e) {
       {% if logger is sameas true %}logger.error("Could not read hdfs file: " + path + " due to error", e);{% endif %}
     }
